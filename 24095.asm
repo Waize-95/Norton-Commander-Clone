@@ -160,11 +160,10 @@ print:  push bp
         mov bp,sp
         push ax
         push bx
-        push cx
-        push dx
         push si
         push di
-        xor si,di
+        push es
+        xor si,si
         xor di,di
         mov ax,0xb800
         mov es,ax
@@ -177,7 +176,7 @@ print:  push bp
         mul bl
         mov bl,[bp+4]
         add ax,bx
-        shr ax,1
+        shl ax,1
         mov di,ax
         xor ax,ax
         mov ah,[bp+8]
@@ -191,10 +190,9 @@ print_loop:     mov al,[si]
                 add di,2
                 jmp print_loop
 
-return_print:   pop di
+return_print:   pop es
+                pop di
                 pop si
-                pop dx
-                pop cx
                 pop bx
                 pop ax
                 pop bp
@@ -214,7 +212,7 @@ exit:   mov ah, 00h
         int 21h
 
 
-Mystr: db "This is Mystr",0
+Mystr: db "This is Myst1r",0
 attribute: db 0x07
 row:  db 2
 cols: db 5 
