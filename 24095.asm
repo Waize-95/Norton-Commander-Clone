@@ -3,26 +3,58 @@ org 100h
 ;call clscr
 call blue_background
 call boundry
-mov ax,Mystr
-push ax
-mov ax,[attribute]
-push ax
-mov ax,[row]
-push ax
-mov ax,[cols]
-push ax
-call print
+
 mov ax,[Mychar]
 push ax
 mov ax,[attr]
 push ax
-mov ax,[c_row]
+mov ax,[v_row1]
 push ax
-mov ax,[c_cols]
+mov ax,[v_cols1]
 push ax
-mov ax,[dest_row]
+mov ax,[dest_row1]
 push ax
 call print_verticle
+
+mov ax,[Mychar]
+push ax
+mov ax,[attr]
+push ax
+mov ax,[v_row2]
+push ax
+mov ax,[v_cols2]
+push ax
+mov ax,[dest_row2]
+push ax
+call print_verticle
+
+
+mov ax,[Mychar]
+push ax
+mov ax,[attr]
+push ax
+mov ax,[v_row3]
+push ax
+mov ax,[v_cols3]
+push ax
+mov ax,[dest_row3]
+push ax
+call print_verticle
+
+
+mov ax,[Mychar]
+push ax
+mov ax,[attr]
+push ax
+mov ax,[v_row4]
+push ax
+mov ax,[v_cols4]
+push ax
+mov ax,[dest_row4]
+push ax
+call print_verticle
+
+
 mov ax,[h_Mychar]
 push ax
 mov ax,[h_attr]
@@ -34,6 +66,9 @@ push ax
 mov ax,[dest_col]
 push ax
 call print_horizontal
+
+
+
 jmp exit
 
 
@@ -343,20 +378,37 @@ exit:   mov ah, 00h
 
 
 Mystr: db "This is Myst1r",0
-attribute: db 0x07
+attribute: db 0x1B
 row:  db 2
 cols: db 5 
 
 
-Mychar: db 0xBA
-attr: db 0x07
-c_row: db 2
-c_cols: db 3
-dest_row: db 5
+Mychar: db 0xB3
+attr: db 0x1B
+
+v_row1: db 1
+v_cols1: db 30
+dest_row1: db 22
 
 
-h_Mychar: db 0xCD
-h_attr: db 0x07
-h_row: db 1
-h_cols: db 3
-dest_col: db 10
+v_row2: db 1
+v_cols2: db 20
+dest_row2: db 22
+
+
+v_row3: db 1
+v_cols3: db 70
+dest_row3: db 22
+
+v_row4: db 1
+v_cols4: db 60
+dest_row4: db 22
+
+
+
+
+h_Mychar: db 0xC4
+h_attr: db 0x1B
+h_row: db 22
+h_cols: db 1
+dest_col: db 78
