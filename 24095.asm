@@ -3,6 +3,15 @@ org 100h
 ;call clscr
 call blue_background
 call boundry
+mov ax,Mystr
+push ax
+mov ax,[attribute]
+push ax
+mov ax,[row]
+push ax
+mov ax,[cols]
+push ax
+call print
 jmp exit
 
 
@@ -147,9 +156,65 @@ return_boundry: pop si
 
 
 
+print:  push bp
+        mov bp,sp
+        push ax
+        push bx
+        push cx
+        push dx
+        push si
+        push di
+        xor si,di
+        xor di,di
+        mov ax,0xb800
+        mov es,ax
+        xor ax,ax
+        xor bx,bx
+        
+        mov si,[bp+10]
+        mov bl,80
+        mov al,[bp+6]
+        mul bl
+        mov bl,[bp+4]
+        add ax,bx
+        shr ax,1
+        mov di,ax
+        xor ax,ax
+        mov ah,[bp+8]
+        jmp print_loop
+
+print_loop:     mov al,[si]
+                cmp al,0
+                jz return_print
+                mov [es:di],ax
+                inc si
+                add di,2
+                jmp print_loop
+
+return_print:   pop di
+                pop si
+                pop dx
+                pop cx
+                pop bx
+                pop ax
+                pop bp
+                ret 8
+
+
+
+
+
+
+
 
 
 exit:   mov ah, 00h
         int 16h
         mov ax,4c00h
         int 21h
+
+
+Mystr: db "This is Mystr",0
+attribute: db 0x07
+row:  db 2
+cols: db 5 
