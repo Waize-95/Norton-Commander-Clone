@@ -12,6 +12,17 @@ push ax
 mov ax,[cols]
 push ax
 call print
+mov ax,[Mychar]
+push ax
+mov ax,[attr]
+push ax
+mov ax,[c_row]
+push ax
+mov ax,[c_cols]
+push ax
+mov ax,[dest_row]
+push ax
+call print_verticle
 jmp exit
 
 
@@ -199,8 +210,55 @@ return_print:   pop es
                 ret 8
 
 
+print_verticle: push bp
+                mov bp,sp
+                push ax
+                push bx
+                push di
+                push es
+                mov ax,0xb800
+                mov es,ax
+                xor ax,ax
+                xor bx,bx
 
+                ; calculated the position of the source from where we have to start printing
+                mov al,[bp+8]
+                mov bl,80
+                mul bl
+                mov bl,[bp+6]
+                add ax,bx
+                shl ax,1
+                mov di,ax
 
+                xor ax,ax
+                xor bx,bx
+
+               ; calculated the position of the destination uptil where we have to print
+                mov al,[bp+4]
+                mov bl,80
+                mul bl
+                mov bl,[bp+6]
+                add ax,bx
+                shl ax,1
+                mov bx,ax
+                
+                ; moved the character and the attribute in the ax register
+                mov al,[bp+12]
+                mov ah,[bp+10]
+                jmp vert_loop
+
+vert_loop:      mov [es:di],ax
+                add di,160
+                cmp di,bx
+                jle vert_loop
+                jmp return_vert
+
+return_vert:    pop es
+                pop di
+                pop bx
+                pop ax
+                pop bp
+                ret 10
 
 
 
@@ -216,3 +274,10 @@ Mystr: db "This is Myst1r",0
 attribute: db 0x07
 row:  db 2
 cols: db 5 
+
+
+Mychar: db 0xBA
+attr: db 0x07
+c_row: db 2
+c_cols: db 3
+dest_row: db 5
