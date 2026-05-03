@@ -23,6 +23,17 @@ push ax
 mov ax,[dest_row]
 push ax
 call print_verticle
+mov ax,[h_Mychar]
+push ax
+mov ax,[h_attr]
+push ax
+mov ax,[h_row]
+push ax
+mov ax,[h_cols]
+push ax
+mov ax,[dest_col]
+push ax
+call print_horizontal
 jmp exit
 
 
@@ -263,6 +274,67 @@ return_vert:    pop es
 
 
 
+print_horizontal:       push bp
+                        mov bp,sp
+                        push ax
+                        push bx
+                        push di
+                        push es
+                        mov ax,0xb800
+                        mov es,ax
+                        xor ax,ax
+                        xor bx,bx
+
+                        ; calculated the position of the source from where we have to start printing
+                        mov al,[bp+8]
+                        mov bl,80
+                        mul bl
+                        mov bl,[bp+6]
+                        add ax,bx
+                        shl ax,1
+                        mov di,ax
+
+                        xor ax,ax
+                        xor bx,bx
+
+                        ;calculated the position of the destination uptil where we have to print
+                        mov al,[bp+8]
+                        mov bl,80
+                        mul bl
+                        mov bl,[bp+4]
+                        add ax,bx
+                        shl ax,1
+                        mov bx,ax
+                
+                        ; moved the character and the attribute in the ax register
+                        mov al,[bp+12]
+                        mov ah,[bp+10]
+                        jmp hori_loop
+
+hori_loop:      mov [es:di],ax
+                add di,2
+                cmp di,bx
+                jle hori_loop
+                jmp return_hori
+
+return_hori:    pop es
+                pop di
+                pop bx
+                pop ax
+                pop bp
+                ret 10
+
+
+
+
+
+
+
+
+
+
+
+
 
 exit:   mov ah, 00h
         int 16h
@@ -281,3 +353,10 @@ attr: db 0x07
 c_row: db 2
 c_cols: db 3
 dest_row: db 5
+
+
+h_Mychar: db 0xCD
+h_attr: db 0x07
+h_row: db 1
+h_cols: db 3
+dest_col: db 10
