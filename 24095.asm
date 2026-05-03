@@ -4,6 +4,75 @@ org 100h
 call blue_background
 call boundry
 
+
+mov ax,Mystr1
+push ax
+mov ax,[attribute]
+push ax
+mov ax,[row1]
+push ax
+mov ax,[cols1]
+push ax
+call print
+
+
+mov ax,Mystr2
+push ax
+mov ax,[attribute]
+push ax
+mov ax,[row2]
+push ax
+mov ax,[cols2]
+push ax
+call print
+
+
+mov ax,Mystr3
+push ax
+mov ax,[attribute]
+push ax
+mov ax,[row3]
+push ax
+mov ax,[cols3]
+push ax
+call print
+
+mov ax,Mystr1
+push ax
+mov ax,[attribute]
+push ax
+mov ax,[row4]
+push ax
+mov ax,[cols4]
+push ax
+call print
+
+mov ax,Mystr2
+push ax
+mov ax,[attribute]
+push ax
+mov ax,[row5]
+push ax
+mov ax,[cols5]
+push ax
+call print
+
+mov ax,Mystr3
+push ax
+mov ax,[attribute]
+push ax
+mov ax,[row6]
+push ax
+mov ax,[cols6]
+push ax
+call print
+
+
+
+
+
+
+
 mov ax,[Mychar]
 push ax
 mov ax,[attr]
@@ -377,10 +446,29 @@ exit:   mov ah, 00h
         int 21h
 
 
-Mystr: db "This is Myst1r",0
-attribute: db 0x1B
-row:  db 2
-cols: db 5 
+Mystr1: db "Name",0
+attribute: db 0x1E
+row1:  db 1
+cols1: db 8
+
+
+Mystr2: db "Size",0
+row2:  db 1
+cols2: db 24 
+
+
+Mystr3: db "Date",0
+row3:  db 1
+cols3: db 33
+
+row4: db 1  
+cols4: db 48
+
+row5: db 1
+cols5: db 64
+
+row6: db 1
+cols6: db 73
 
 
 Mychar: db 0xB3
