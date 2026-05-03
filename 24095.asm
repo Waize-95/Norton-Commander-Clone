@@ -70,9 +70,6 @@ call print
 
 
 
-
-
-
 mov ax,[Mychar]
 push ax
 mov ax,[attr]
@@ -136,6 +133,24 @@ mov ax,[dest_col]
 push ax
 call print_horizontal
 
+
+fix_boundry:    mov ax,0xb800
+                mov es,ax
+                mov ax,1BC1h
+                mov di,3560
+                mov [es:di],ax
+                add di,20
+                mov [es:di],ax
+                mov ax,1BBAh
+                add di,18  
+                mov [es:di],ax
+                add di,2
+                mov [es:di],ax
+                mov ax,1BC1h
+                add di,40
+                mov [es:di],ax
+                add di,20
+                mov [es:di],ax
 
 
 jmp exit
