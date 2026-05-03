@@ -25,4 +25,4 @@ I am yet not making the checks regarding file names or any other thing, we will 
 ##### Report
 I have successfully made the utility functions, print, print horizontal and print vertical, now that utility functions are done, its time to use the utility functions and complete the interface of the file manager
 ![alt text](image.png)
-May 4th, 3:11 AM, ui done and it looks like this, now only the file extraction login is left which is harder :)
+May 4th, 3:11 AM, ui done and it looks like this, now only the file extraction logic is left which is harder :)
