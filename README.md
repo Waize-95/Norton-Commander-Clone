@@ -21,3 +21,6 @@ attribute the x and y position and print that character throughout the screen ei
 Also i will make the functions that will take a null terminated string and print that anywhere on the screen.
 The string can contain either alphabets or numbers or special characters, it does not matter.
 I am yet not making the checks regarding file names or any other thing, we will come to that later. Right now i am just making a file viewer, i will add the options to add and remove files and make files and directiories later.
+
+##### Report
+I have successfully made the utility functions, print, print horizontal and print vertical, now that utility functions are done, its time to use the utility functions and complete the interface of the file manager
