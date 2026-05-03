@@ -1,0 +1,128 @@
+     1                                  org 100h
+     2                                  
+     3 00000000 E80900                  call clscr
+     4 00000003 E82E00                  call blue_background
+     5 00000006 E85300                  call boundry
+     6 00000009 E9E100                  jmp exit
+     7                                  
+     8                                  
+     9                                  
+    10                                  
+    11 0000000C 55                      clscr:  push bp
+    12 0000000D 89E5                            mov bp,sp
+    13 0000000F 50                              push ax
+    14 00000010 06                              push es
+    15 00000011 57                              push di
+    16 00000012 31FF                            xor di,di
+    17 00000014 B800B8                          mov ax,0xb800
+    18 00000017 8EC0                            mov es,ax
+    19 00000019 B82000                          mov ax, 0x0020
+    20 0000001C E90000                          jmp clear_loop
+    21                                  
+    22 0000001F 268905                  clear_loop: mov [es:di],ax
+    23 00000022 81C70200                            add di,2
+    24 00000026 81FFA00F                            cmp di,4000
+    25 0000002A 75F3                                jnz clear_loop
+    26 0000002C E90000                              jmp return_clscr
+    27                                  
+    28 0000002F 5F                      return_clscr:   pop di
+    29 00000030 07                                      pop es
+    30 00000031 58                                      pop ax
+    31 00000032 5D                                      pop bp
+    32 00000033 C3                                      ret
+    33                                  
+    34                                  
+    35 00000034 55                      blue_background:    push bp
+    36 00000035 89E5                                        mov bp,sp
+    37 00000037 50                                          push ax
+    38 00000038 57                                          push di
+    39 00000039 06                                          push es
+    40 0000003A 31FF                                        xor di,di
+    41 0000003C B800B8                                      mov ax,0xb800
+    42 0000003F 8EC0                                        mov es,ax
+    43 00000041 B82010                                      mov ax,1020h
+    44 00000044 E90000                                      jmp background_loop
+    45                                  
+    46 00000047 268905                  background_loop:    mov [es:di],ax
+    47 0000004A 81C70200                                    add di,2
+    48 0000004E 81FFA00F                                    cmp di,4000
+    49 00000052 75F3                                        jnz background_loop
+    50 00000054 E90000                                      jmp ret_back
+    51                                  
+    52                                  
+    53 00000057 07                      ret_back:   pop es
+    54 00000058 5F                                  pop di
+    55 00000059 58                                  pop ax
+    56 0000005A 5D                                  pop bp
+    57 0000005B C3                                  ret
+    58                                  
+    59                                  
+    60 0000005C 55                      boundry:  push bp
+    61 0000005D 89E5                            mov bp,sp
+    62 0000005F 50                              push ax
+    63 00000060 06                              push es
+    64 00000061 57                              push di
+    65 00000062 B800B8                          mov ax,0xb800
+    66 00000065 8EC0                            mov es,ax
+    67 00000067 31FF                            xor di,di
+    68 00000069 B8CD1B                          mov ax,0x1BCD
+    69 0000006C E90000                          jmp upper_loop
+    70                                  
+    71                                  
+    72 0000006F 268905                  upper_loop:     mov [es:di],ax
+    73 00000072 81C70200                                add di,2
+    74 00000076 81FFA000                                cmp di,160
+    75 0000007A 75F3                                    jnz upper_loop
+    76 0000007C 81EF0200                                sub di,2
+    77 00000080 B8BA1B                                  mov ax,0x1BBA
+    78 00000083 E90000                                  jmp right_loop
+    79                                  
+    80 00000086 268905                  right_loop:     mov [es:di],ax
+    81 00000089 81C7A000                                add di,160
+    82 0000008D 81FFA00F                                cmp di,4000
+    83 00000091 7CF3                                    jl right_loop
+    84 00000093 81EFA000                                sub di,160
+    85 00000097 B8CD1B                                  mov ax,0x1BCD
+    86 0000009A E90000                                  jmp down_loop
+    87                                  
+    88 0000009D 268905                  down_loop:      mov [es:di],ax
+    89 000000A0 81EF0200                                sub di,2
+    90 000000A4 81FF000F                                cmp di,0x0F00
+    91 000000A8 7DF3                                    jge down_loop
+    92 000000AA 81C70200                                add di,2
+    93 000000AE B8BA1B                                  mov ax,0x1BBA
+    94 000000B1 E90000                                  jmp left_loop
+    95                                  
+    96 000000B4 268905                  left_loop:      mov [es:di],ax
+    97 000000B7 81EFA000                                sub di,160
+    98 000000BB 81FF0000                                cmp di,0
+    99 000000BF 7FF3                                    jg left_loop
+   100                                                  ; correcting borders, i think if i first compare in loop and make the borders in loop
+   101                                                  ; that would be more computationaly expensive
+   102 000000C1 BF0000                                  mov di,0        ; top left
+   103 000000C4 B8C91B                                  mov ax,0x1BC9   
+   104 000000C7 268905                                  mov [es:di],ax
+   105 000000CA BF9E00                                  mov di,158      ; top right
+   106 000000CD B8BB1B                                  mov ax,0x1BBB
+   107 000000D0 268905                                  mov [es:di],ax
+   108 000000D3 BF9E0F                                  mov di,3998     ; bottom right
+   109 000000D6 B8BC1B                                  mov ax,0x1BBC
+   110 000000D9 268905                                  mov [es:di],ax
+   111 000000DC BF000F                                  mov di,0x0F00   ;bottom left
+   112 000000DF B8C81B                                  mov ax,0x1BC8
+   113 000000E2 268905                                  mov [es:di],ax
+   114 000000E5 E90000                                  jmp return_boundry
+   115                                  
+   116 000000E8 5F                      return_boundry: pop di
+   117 000000E9 07                                      pop es
+   118 000000EA 58                                      pop ax
+   119 000000EB 5D                                      pop bp
+   120 000000EC C3                                      ret
+   121                                  
+   122                                  
+   123                                  
+   124                                  
+   125 000000ED B400                    exit:   mov ah, 00h
+   126 000000EF CD16                            int 16h
+   127 000000F1 B8004C                          mov ax,4c00h
+   128 000000F4 CD21                            int 21h

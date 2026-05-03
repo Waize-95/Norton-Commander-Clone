@@ -65,7 +65,7 @@ boundry:  push bp
         mov ax,0xb800
         mov es,ax
         xor di,di
-        mov ax,0x13CD
+        mov ax,0x1BCD
         jmp upper_loop
 
 
@@ -74,7 +74,7 @@ upper_loop:     mov [es:di],ax
                 cmp di,160
                 jnz upper_loop
                 sub di,2
-                mov ax,0x13BA
+                mov ax,0x1BBA
                 jmp right_loop
 
 right_loop:     mov [es:di],ax
@@ -82,7 +82,7 @@ right_loop:     mov [es:di],ax
                 cmp di,4000
                 jl right_loop
                 sub di,160
-                mov ax,0x13CD
+                mov ax,0x1BCD
                 jmp down_loop
 
 down_loop:      mov [es:di],ax
@@ -90,7 +90,7 @@ down_loop:      mov [es:di],ax
                 cmp di,0x0F00
                 jge down_loop
                 add di,2
-                mov ax,0x13BA
+                mov ax,0x1BBA
                 jmp left_loop
 
 left_loop:      mov [es:di],ax
@@ -100,16 +100,16 @@ left_loop:      mov [es:di],ax
                 ; correcting borders, i think if i first compare in loop and make the borders in loop
                 ; that would be more computationaly expensive
                 mov di,0        ; top left
-                mov ax,0x13C9   
+                mov ax,0x1BC9   
                 mov [es:di],ax
                 mov di,158      ; top right
-                mov ax,0x13BB
+                mov ax,0x1BBB
                 mov [es:di],ax
                 mov di,3998     ; bottom right
-                mov ax,0x13BC
+                mov ax,0x1BBC
                 mov [es:di],ax
                 mov di,0x0F00   ;bottom left
-                mov ax,0x13C8
+                mov ax,0x1BC8
                 mov [es:di],ax
                 jmp return_boundry
 
