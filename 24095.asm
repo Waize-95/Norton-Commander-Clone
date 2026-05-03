@@ -1,6 +1,6 @@
 org 100h
 
-call clscr
+;call clscr
 call blue_background
 call boundry
 jmp exit
@@ -124,16 +124,16 @@ panes:  mov di,80
         cmp di,0x0F00
         jle @here
         ; now correcting the boundries of the panes
-        mov di,78
+        mov di,78       ; for the ╗ of left pane
         mov ax,0x1BBB
         mov [es:di],ax
-        add di,2
+        add di,2        ; for the ╔ of right pane
         mov ax,0x1BC9
         mov [es:di],ax
-        mov di,0x0F4E
+        mov di,0x0F4E   ; for the boundry of first pane's bottom right
         mov ax,0x1BBC
         mov [es:di],ax
-        add di,2
+        add di,2        ; for the boundry of second pane's bottom left
         mov ax,0x1BC8
         mov [es:di],ax
         jmp return_boundry
@@ -144,6 +144,7 @@ return_boundry: pop si
                 pop ax
                 pop bp
                 ret
+
 
 
 
