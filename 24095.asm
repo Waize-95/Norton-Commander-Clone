@@ -62,6 +62,7 @@ boundry:  push bp
         push ax
         push es
         push di
+        push si
         mov ax,0xb800
         mov es,ax
         xor di,di
@@ -111,9 +112,34 @@ left_loop:      mov [es:di],ax
                 mov di,0x0F00   ;bottom left
                 mov ax,0x1BC8
                 mov [es:di],ax
-                jmp return_boundry
+                jmp panes
 
-return_boundry: pop di
+panes:  mov di,80
+        mov si,78
+        mov ax,1BBAh
+@here   mov [es:si],ax
+        mov [es:di],ax
+        add si,160
+        add di,160
+        cmp di,0x0F00
+        jle @here
+        ; now correcting the boundries of the panes
+        mov di,78
+        mov ax,0x1BBB
+        mov [es:di],ax
+        add di,2
+        mov ax,0x1BC9
+        mov [es:di],ax
+        mov di,0x0F4E
+        mov ax,0x1BBC
+        mov [es:di],ax
+        add di,2
+        mov ax,0x1BC8
+        mov [es:di],ax
+        jmp return_boundry
+
+return_boundry: pop si
+                pop di
                 pop es
                 pop ax
                 pop bp
