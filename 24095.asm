@@ -134,6 +134,15 @@ push ax
 call print_horizontal
 
 
+
+
+
+
+
+
+
+
+
 fix_boundry:    mov ax,0xb800
                 mov es,ax
                 mov ax,1BC1h
@@ -151,6 +160,23 @@ fix_boundry:    mov ax,0xb800
                 mov [es:di],ax
                 add di,20
                 mov [es:di],ax
+
+
+
+xor ax,ax
+mov al,[active_pane]
+push ax
+mov al,[current_row]
+push ax
+mov al,[l_start_cols]
+push ax
+mov al,[l_end_cols]
+push ax
+mov al,[r_start_cols]
+push ax
+mov al,[r_end_cols]
+push ax
+call highlight_row
 
 
 jmp exit
@@ -445,6 +471,75 @@ return_hori:    pop es
 
 
 
+highlight_row:  push bp
+                mov bp,sp
+                push ax
+                push bx
+                push dx
+                push si
+                push di
+                push es
+
+                mov ax,0xb800
+                mov es,ax
+                xor bx,bx
+                xor dx,dx
+                mov ax,[bp+14]  ;active_pane
+                cmp ax,0
+                jz left_pane
+                jmp right_pane
+
+left_pane:      mov ax,[bp+12]
+                mov bl,80
+                mul bl
+                mov dx,ax
+                mov bx,[bp+10]  
+                add ax,bx       ; ax contains the starting index
+                shl ax,1
+                mov bx,[bp+8]
+                add dx,bx       ;dx contains the ending index
+                shl dx,1
+                mov si,ax
+                mov di,dx
+                jmp highlight_loop
+
+
+right_pane:     mov ax,[bp+12]
+                mov bl,80
+                mul bl
+                mov dx,ax
+                mov bx,[bp+6]
+                add ax,bx
+                shl ax,1
+                mov bx,[bp+4]
+                add dx,bx
+                shl dx,1
+                mov si,ax
+                mov di,dx
+                jmp highlight_loop
+
+highlight_loop: mov ax,[es:si]
+                mov ah,31h
+                mov [es:si],ax
+                add si,2
+                cmp si,di
+                jle highlight_loop
+                jmp return_highlight
+
+return_highlight:       pop es
+                        pop di
+                        pop si
+                        pop dx
+                        pop bx
+                        pop ax
+                        pop bp
+                        ret 12
+
+
+                
+
+
+
 
 
 
@@ -515,3 +610,15 @@ h_attr: db 0x1B
 h_row: db 22
 h_cols: db 1
 dest_col: db 78
+
+
+;===============================================================================================================
+
+active_pane: db 1
+current_row: db 2
+l_start_cols: db 1
+l_end_cols: db 38
+r_start_cols: db 41
+r_end_cols: db 78
+
+previous_row: db 1

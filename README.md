@@ -26,3 +26,6 @@ I am yet not making the checks regarding file names or any other thing, we will 
 I have successfully made the utility functions, print, print horizontal and print vertical, now that utility functions are done, its time to use the utility functions and complete the interface of the file manager
 ![alt text](image.png)
 May 4th, 3:11 AM, ui done and it looks like this, now only the file extraction logic is left which is harder :)
+
+##### - Day-3
+Today i will move onto making the selection logic, the selection logic includes the highlight text and higlighting the window pane options based on the bar that the user is currently using, we will also add keyboard handling. Whenever user presses ↑ ↓ the highlight bar will move up and down and whenever the user presses the tab key the active window will change. One more important feature is that whenever the higlight bar moves, only the two active rows will refresh not the whole ui design
