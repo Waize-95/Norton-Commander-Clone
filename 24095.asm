@@ -166,6 +166,7 @@ fix_boundry:    mov ax,0xb800
 ; the above was just initialization of the whole UI
 
 
+; the whole main starting logic after initialization of the UI starts here
 
 main_highlight: xor ax,ax
                 mov al,[active_pane]
@@ -182,10 +183,6 @@ main_highlight: xor ax,ax
                 push ax
                 call highlight_row
                 jmp main_loop
-
-
-main_unhighlight: 
-
 
 
 main_loop:      mov ah,00h      ;waiting for the user to press the key
@@ -209,6 +206,10 @@ main_loop:      mov ah,00h      ;waiting for the user to press the key
 ;IDEA instead of just copying and pasting unhighlight everywhere, i can send a value in al like 0,1,2
 ; after calling the unhighligh_row i compare the value of al, if it is 0 i jump to switch panes etc
   
+; or even better idea is that we can use wrapper subroutine, we can create another subroutine called
+; main_unhighlight and just call it from anywhere, whenever it is returned it will be returned to exactly
+; next line from where it was originally called
+
 switch_panes:   xor ax,ax
                 mov al,[active_pane]
                 push ax

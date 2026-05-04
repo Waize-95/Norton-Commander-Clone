@@ -46,3 +46,12 @@ Now the manager is fully keyboard controlled
 ###### important features
 When at the last row, pressing the down arrow key moves to the first row of the file listings
 similarly when at the first row, pressing the up arrow key moves to the last accessible file.
+
+##### Next Steps
+i cant jump straight onto the file reading logic from the System, i still have a long way to go because i still
+have to figure out how will i handle navigation, how will i handle directories vs files so first of all i am 
+going to create a list of fake files(no directories yet) than i will map those files to rows and also add the 
+navigation meaning that if the number of file exceeds the limit of rows on which i can map them, i will scroll
+down to view more and when i scroll back up the previous files will be loaded.
+After i successfully do this, i will move onto the directories issue and than the file reading , file writing 
+and file editing and if later i want i can also add a column showing the extensions of the files.
