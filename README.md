@@ -24,7 +24,7 @@ I am yet not making the checks regarding file names or any other thing, we will 
 
 ##### Report
 I have successfully made the utility functions, print, print horizontal and print vertical, now that utility functions are done, its time to use the utility functions and complete the interface of the file manager
-![alt text](image.png)
+![alt text](media/image.png)
 May 4th, 3:11 AM, ui done and it looks like this, now only the file extraction logic is left which is harder :)
 
 ##### - Day-3
@@ -32,9 +32,9 @@ Today i will move onto making the selection logic, the selection logic includes 
 
 ##### Report
 Successfully made the text highligher that works on both panes seperately.
-![alt text](image-1.png)
+![alt text](media/image-1.png)
 Working for pane 1
-![alt text](image-2.png)
+![alt text](media/image-2.png)
 Working for pane 2
 
 Now the manager is fully keyboard controlled
