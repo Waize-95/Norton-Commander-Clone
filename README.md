@@ -36,3 +36,13 @@ Successfully made the text highligher that works on both panes seperately.
 Working for pane 1
 ![alt text](image-2.png)
 Working for pane 2
+
+Now the manager is fully keyboard controlled
+- pressing the down arrow move to the next row
+- pressing the up arrow moves to the previous row
+- pressing the tab changed the pain
+- pressing the esc exits the program
+
+###### important features
+When at the last row, pressing the down arrow key moves to the first row of the file listings
+similarly when at the first row, pressing the up arrow key moves to the last accessible file.
