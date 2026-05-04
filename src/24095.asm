@@ -2,6 +2,7 @@ org 100h
 jmp start
 
 start:  call initialize_ui
+        call main_highlight
         jmp main_loop
 
 
@@ -102,7 +103,7 @@ exit:
 
 
 %include "init_ui.asm"
-%include "helper_ui.asm"
 %include "helper.asm"
+%include "help_ui.asm"
 %include "logic.asm"
 %include "data.asm"
