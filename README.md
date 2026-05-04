@@ -29,3 +29,10 @@ May 4th, 3:11 AM, ui done and it looks like this, now only the file extraction l
 
 ##### - Day-3
 Today i will move onto making the selection logic, the selection logic includes the highlight text and higlighting the window pane options based on the bar that the user is currently using, we will also add keyboard handling. Whenever user presses ↑ ↓ the highlight bar will move up and down and whenever the user presses the tab key the active window will change. One more important feature is that whenever the higlight bar moves, only the two active rows will refresh not the whole ui design
+
+##### Report
+Successfully made the text highligher that works on both panes seperately.
+![alt text](image-1.png)
+Working for pane 1
+![alt text](image-2.png)
+Working for pane 2

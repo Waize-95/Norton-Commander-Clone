@@ -1,128 +1,624 @@
      1                                  org 100h
      2                                  
-     3 00000000 E80900                  call clscr
-     4 00000003 E82E00                  call blue_background
-     5 00000006 E85300                  call boundry
-     6 00000009 E9E100                  jmp exit
+     3                                  ;call clscr
+     4 00000000 E86701                  call blue_background
+     5 00000003 E88C01                  call boundry
+     6                                  
      7                                  
-     8                                  
-     9                                  
-    10                                  
-    11 0000000C 55                      clscr:  push bp
-    12 0000000D 89E5                            mov bp,sp
-    13 0000000F 50                              push ax
-    14 00000010 06                              push es
-    15 00000011 57                              push di
-    16 00000012 31FF                            xor di,di
-    17 00000014 B800B8                          mov ax,0xb800
-    18 00000017 8EC0                            mov es,ax
-    19 00000019 B82000                          mov ax, 0x0020
-    20 0000001C E90000                          jmp clear_loop
-    21                                  
-    22 0000001F 268905                  clear_loop: mov [es:di],ax
-    23 00000022 81C70200                            add di,2
-    24 00000026 81FFA00F                            cmp di,4000
-    25 0000002A 75F3                                jnz clear_loop
-    26 0000002C E90000                              jmp return_clscr
-    27                                  
-    28 0000002F 5F                      return_clscr:   pop di
-    29 00000030 07                                      pop es
-    30 00000031 58                                      pop ax
-    31 00000032 5D                                      pop bp
-    32 00000033 C3                                      ret
-    33                                  
-    34                                  
-    35 00000034 55                      blue_background:    push bp
-    36 00000035 89E5                                        mov bp,sp
-    37 00000037 50                                          push ax
-    38 00000038 57                                          push di
-    39 00000039 06                                          push es
-    40 0000003A 31FF                                        xor di,di
-    41 0000003C B800B8                                      mov ax,0xb800
-    42 0000003F 8EC0                                        mov es,ax
-    43 00000041 B82010                                      mov ax,1020h
-    44 00000044 E90000                                      jmp background_loop
-    45                                  
-    46 00000047 268905                  background_loop:    mov [es:di],ax
-    47 0000004A 81C70200                                    add di,2
-    48 0000004E 81FFA00F                                    cmp di,4000
-    49 00000052 75F3                                        jnz background_loop
-    50 00000054 E90000                                      jmp ret_back
-    51                                  
-    52                                  
-    53 00000057 07                      ret_back:   pop es
-    54 00000058 5F                                  pop di
-    55 00000059 58                                  pop ax
-    56 0000005A 5D                                  pop bp
-    57 0000005B C3                                  ret
-    58                                  
+     8 00000006 B8[D903]                mov ax,Mystr1
+     9 00000009 50                      push ax
+    10 0000000A A1[DE03]                mov ax,[attribute]
+    11 0000000D 50                      push ax
+    12 0000000E A1[DF03]                mov ax,[row1]
+    13 00000011 50                      push ax
+    14 00000012 A1[E003]                mov ax,[cols1]
+    15 00000015 50                      push ax
+    16 00000016 E85202                  call print
+    17                                  
+    18                                  
+    19 00000019 B8[E103]                mov ax,Mystr2
+    20 0000001C 50                      push ax
+    21 0000001D A1[DE03]                mov ax,[attribute]
+    22 00000020 50                      push ax
+    23 00000021 A1[E603]                mov ax,[row2]
+    24 00000024 50                      push ax
+    25 00000025 A1[E703]                mov ax,[cols2]
+    26 00000028 50                      push ax
+    27 00000029 E83F02                  call print
+    28                                  
+    29                                  
+    30 0000002C B8[E803]                mov ax,Mystr3
+    31 0000002F 50                      push ax
+    32 00000030 A1[DE03]                mov ax,[attribute]
+    33 00000033 50                      push ax
+    34 00000034 A1[ED03]                mov ax,[row3]
+    35 00000037 50                      push ax
+    36 00000038 A1[EE03]                mov ax,[cols3]
+    37 0000003B 50                      push ax
+    38 0000003C E82C02                  call print
+    39                                  
+    40 0000003F B8[D903]                mov ax,Mystr1
+    41 00000042 50                      push ax
+    42 00000043 A1[DE03]                mov ax,[attribute]
+    43 00000046 50                      push ax
+    44 00000047 A1[EF03]                mov ax,[row4]
+    45 0000004A 50                      push ax
+    46 0000004B A1[F003]                mov ax,[cols4]
+    47 0000004E 50                      push ax
+    48 0000004F E81902                  call print
+    49                                  
+    50 00000052 B8[E103]                mov ax,Mystr2
+    51 00000055 50                      push ax
+    52 00000056 A1[DE03]                mov ax,[attribute]
+    53 00000059 50                      push ax
+    54 0000005A A1[F103]                mov ax,[row5]
+    55 0000005D 50                      push ax
+    56 0000005E A1[F203]                mov ax,[cols5]
+    57 00000061 50                      push ax
+    58 00000062 E80602                  call print
     59                                  
-    60 0000005C 55                      boundry:  push bp
-    61 0000005D 89E5                            mov bp,sp
-    62 0000005F 50                              push ax
-    63 00000060 06                              push es
-    64 00000061 57                              push di
-    65 00000062 B800B8                          mov ax,0xb800
-    66 00000065 8EC0                            mov es,ax
-    67 00000067 31FF                            xor di,di
-    68 00000069 B8CD1B                          mov ax,0x1BCD
-    69 0000006C E90000                          jmp upper_loop
+    60 00000065 B8[E803]                mov ax,Mystr3
+    61 00000068 50                      push ax
+    62 00000069 A1[DE03]                mov ax,[attribute]
+    63 0000006C 50                      push ax
+    64 0000006D A1[F303]                mov ax,[row6]
+    65 00000070 50                      push ax
+    66 00000071 A1[F403]                mov ax,[cols6]
+    67 00000074 50                      push ax
+    68 00000075 E8F301                  call print
+    69                                  
     70                                  
     71                                  
-    72 0000006F 268905                  upper_loop:     mov [es:di],ax
-    73 00000072 81C70200                                add di,2
-    74 00000076 81FFA000                                cmp di,160
-    75 0000007A 75F3                                    jnz upper_loop
-    76 0000007C 81EF0200                                sub di,2
-    77 00000080 B8BA1B                                  mov ax,0x1BBA
-    78 00000083 E90000                                  jmp right_loop
-    79                                  
-    80 00000086 268905                  right_loop:     mov [es:di],ax
-    81 00000089 81C7A000                                add di,160
-    82 0000008D 81FFA00F                                cmp di,4000
-    83 00000091 7CF3                                    jl right_loop
-    84 00000093 81EFA000                                sub di,160
-    85 00000097 B8CD1B                                  mov ax,0x1BCD
-    86 0000009A E90000                                  jmp down_loop
-    87                                  
-    88 0000009D 268905                  down_loop:      mov [es:di],ax
-    89 000000A0 81EF0200                                sub di,2
-    90 000000A4 81FF000F                                cmp di,0x0F00
-    91 000000A8 7DF3                                    jge down_loop
-    92 000000AA 81C70200                                add di,2
-    93 000000AE B8BA1B                                  mov ax,0x1BBA
-    94 000000B1 E90000                                  jmp left_loop
-    95                                  
-    96 000000B4 268905                  left_loop:      mov [es:di],ax
-    97 000000B7 81EFA000                                sub di,160
-    98 000000BB 81FF0000                                cmp di,0
-    99 000000BF 7FF3                                    jg left_loop
-   100                                                  ; correcting borders, i think if i first compare in loop and make the borders in loop
-   101                                                  ; that would be more computationaly expensive
-   102 000000C1 BF0000                                  mov di,0        ; top left
-   103 000000C4 B8C91B                                  mov ax,0x1BC9   
-   104 000000C7 268905                                  mov [es:di],ax
-   105 000000CA BF9E00                                  mov di,158      ; top right
-   106 000000CD B8BB1B                                  mov ax,0x1BBB
-   107 000000D0 268905                                  mov [es:di],ax
-   108 000000D3 BF9E0F                                  mov di,3998     ; bottom right
-   109 000000D6 B8BC1B                                  mov ax,0x1BBC
-   110 000000D9 268905                                  mov [es:di],ax
-   111 000000DC BF000F                                  mov di,0x0F00   ;bottom left
-   112 000000DF B8C81B                                  mov ax,0x1BC8
-   113 000000E2 268905                                  mov [es:di],ax
-   114 000000E5 E90000                                  jmp return_boundry
-   115                                  
-   116 000000E8 5F                      return_boundry: pop di
-   117 000000E9 07                                      pop es
-   118 000000EA 58                                      pop ax
-   119 000000EB 5D                                      pop bp
-   120 000000EC C3                                      ret
-   121                                  
+    72                                  
+    73 00000078 A1[F503]                mov ax,[Mychar]
+    74 0000007B 50                      push ax
+    75 0000007C A1[F603]                mov ax,[attr]
+    76 0000007F 50                      push ax
+    77 00000080 A1[F703]                mov ax,[v_row1]
+    78 00000083 50                      push ax
+    79 00000084 A1[F803]                mov ax,[v_cols1]
+    80 00000087 50                      push ax
+    81 00000088 A1[F903]                mov ax,[dest_row1]
+    82 0000008B 50                      push ax
+    83 0000008C E82502                  call print_verticle
+    84                                  
+    85 0000008F A1[F503]                mov ax,[Mychar]
+    86 00000092 50                      push ax
+    87 00000093 A1[F603]                mov ax,[attr]
+    88 00000096 50                      push ax
+    89 00000097 A1[FA03]                mov ax,[v_row2]
+    90 0000009A 50                      push ax
+    91 0000009B A1[FB03]                mov ax,[v_cols2]
+    92 0000009E 50                      push ax
+    93 0000009F A1[FC03]                mov ax,[dest_row2]
+    94 000000A2 50                      push ax
+    95 000000A3 E80E02                  call print_verticle
+    96                                  
+    97                                  
+    98 000000A6 A1[F503]                mov ax,[Mychar]
+    99 000000A9 50                      push ax
+   100 000000AA A1[F603]                mov ax,[attr]
+   101 000000AD 50                      push ax
+   102 000000AE A1[FD03]                mov ax,[v_row3]
+   103 000000B1 50                      push ax
+   104 000000B2 A1[FE03]                mov ax,[v_cols3]
+   105 000000B5 50                      push ax
+   106 000000B6 A1[FF03]                mov ax,[dest_row3]
+   107 000000B9 50                      push ax
+   108 000000BA E8F701                  call print_verticle
+   109                                  
+   110                                  
+   111 000000BD A1[F503]                mov ax,[Mychar]
+   112 000000C0 50                      push ax
+   113 000000C1 A1[F603]                mov ax,[attr]
+   114 000000C4 50                      push ax
+   115 000000C5 A1[0004]                mov ax,[v_row4]
+   116 000000C8 50                      push ax
+   117 000000C9 A1[0104]                mov ax,[v_cols4]
+   118 000000CC 50                      push ax
+   119 000000CD A1[0204]                mov ax,[dest_row4]
+   120 000000D0 50                      push ax
+   121 000000D1 E8E001                  call print_verticle
    122                                  
    123                                  
-   124                                  
-   125 000000ED B400                    exit:   mov ah, 00h
-   126 000000EF CD16                            int 16h
-   127 000000F1 B8004C                          mov ax,4c00h
-   128 000000F4 CD21                            int 21h
+   124 000000D4 A1[0304]                mov ax,[h_Mychar]
+   125 000000D7 50                      push ax
+   126 000000D8 A1[0404]                mov ax,[h_attr]
+   127 000000DB 50                      push ax
+   128 000000DC A1[0504]                mov ax,[h_row]
+   129 000000DF 50                      push ax
+   130 000000E0 A1[0604]                mov ax,[h_cols]
+   131 000000E3 50                      push ax
+   132 000000E4 A1[0704]                mov ax,[dest_col]
+   133 000000E7 50                      push ax
+   134 000000E8 E81C02                  call print_horizontal
+   135                                  
+   136                                  
+   137                                  
+   138                                  
+   139                                  
+   140                                  
+   141                                  
+   142                                  
+   143                                  
+   144                                  
+   145                                  
+   146 000000EB B800B8                  fix_boundry:    mov ax,0xb800
+   147 000000EE 8EC0                                    mov es,ax
+   148 000000F0 B8C11B                                  mov ax,1BC1h
+   149 000000F3 BFE80D                                  mov di,3560
+   150 000000F6 268905                                  mov [es:di],ax
+   151 000000F9 81C71400                                add di,20
+   152 000000FD 268905                                  mov [es:di],ax
+   153 00000100 B8BA1B                                  mov ax,1BBAh
+   154 00000103 81C71200                                add di,18  
+   155 00000107 268905                                  mov [es:di],ax
+   156 0000010A 81C70200                                add di,2
+   157 0000010E 268905                                  mov [es:di],ax
+   158 00000111 B8C11B                                  mov ax,1BC1h
+   159 00000114 81C72800                                add di,40
+   160 00000118 268905                                  mov [es:di],ax
+   161 0000011B 81C71400                                add di,20
+   162 0000011F 268905                                  mov [es:di],ax
+   163                                  
+   164                                  
+   165                                  
+   166 00000122 31C0                    xor ax,ax
+   167 00000124 A0[0804]                mov al,[active_pane]
+   168 00000127 50                      push ax
+   169 00000128 A0[0904]                mov al,[current_row]
+   170 0000012B 50                      push ax
+   171 0000012C A0[0A04]                mov al,[l_start_cols]
+   172 0000012F 50                      push ax
+   173 00000130 A0[0B04]                mov al,[l_end_cols]
+   174 00000133 50                      push ax
+   175 00000134 A0[0C04]                mov al,[r_start_cols]
+   176 00000137 50                      push ax
+   177 00000138 A0[0D04]                mov al,[r_end_cols]
+   178 0000013B 50                      push ax
+   179 0000013C E81B02                  call highlight_row
+   180                                  
+   181                                  
+   182 0000013F E98E02                  jmp exit
+   183                                  
+   184                                  
+   185                                  
+   186                                  
+   187 00000142 55                      clscr:  push bp
+   188 00000143 89E5                            mov bp,sp
+   189 00000145 50                              push ax
+   190 00000146 06                              push es
+   191 00000147 57                              push di
+   192 00000148 31FF                            xor di,di
+   193 0000014A B800B8                          mov ax,0xb800
+   194 0000014D 8EC0                            mov es,ax
+   195 0000014F B82000                          mov ax, 0x0020
+   196 00000152 E90000                          jmp clear_loop
+   197                                  
+   198 00000155 268905                  clear_loop: mov [es:di],ax
+   199 00000158 81C70200                            add di,2
+   200 0000015C 81FFA00F                            cmp di,4000
+   201 00000160 75F3                                jnz clear_loop
+   202 00000162 E90000                              jmp return_clscr
+   203                                  
+   204 00000165 5F                      return_clscr:   pop di
+   205 00000166 07                                      pop es
+   206 00000167 58                                      pop ax
+   207 00000168 5D                                      pop bp
+   208 00000169 C3                                      ret
+   209                                  
+   210                                  
+   211 0000016A 55                      blue_background:    push bp
+   212 0000016B 89E5                                        mov bp,sp
+   213 0000016D 50                                          push ax
+   214 0000016E 57                                          push di
+   215 0000016F 06                                          push es
+   216 00000170 31FF                                        xor di,di
+   217 00000172 B800B8                                      mov ax,0xb800
+   218 00000175 8EC0                                        mov es,ax
+   219 00000177 B82010                                      mov ax,1020h
+   220 0000017A E90000                                      jmp background_loop
+   221                                  
+   222 0000017D 268905                  background_loop:    mov [es:di],ax
+   223 00000180 81C70200                                    add di,2
+   224 00000184 81FFA00F                                    cmp di,4000
+   225 00000188 75F3                                        jnz background_loop
+   226 0000018A E90000                                      jmp ret_back
+   227                                  
+   228                                  
+   229 0000018D 07                      ret_back:   pop es
+   230 0000018E 5F                                  pop di
+   231 0000018F 58                                  pop ax
+   232 00000190 5D                                  pop bp
+   233 00000191 C3                                  ret
+   234                                  
+   235                                  
+   236 00000192 55                      boundry:  push bp
+   237 00000193 89E5                            mov bp,sp
+   238 00000195 50                              push ax
+   239 00000196 06                              push es
+   240 00000197 57                              push di
+   241 00000198 56                              push si
+   242 00000199 B800B8                          mov ax,0xb800
+   243 0000019C 8EC0                            mov es,ax
+   244 0000019E 31FF                            xor di,di
+   245 000001A0 B8CD1B                          mov ax,0x1BCD
+   246 000001A3 E90000                          jmp upper_loop
+   247                                  
+   248                                  
+   249 000001A6 268905                  upper_loop:     mov [es:di],ax
+   250 000001A9 81C70200                                add di,2
+   251 000001AD 81FFA000                                cmp di,160
+   252 000001B1 75F3                                    jnz upper_loop
+   253 000001B3 81EF0200                                sub di,2
+   254 000001B7 B8BA1B                                  mov ax,0x1BBA
+   255 000001BA E90000                                  jmp right_loop
+   256                                  
+   257 000001BD 268905                  right_loop:     mov [es:di],ax
+   258 000001C0 81C7A000                                add di,160
+   259 000001C4 81FFA00F                                cmp di,4000
+   260 000001C8 7CF3                                    jl right_loop
+   261 000001CA 81EFA000                                sub di,160
+   262 000001CE B8CD1B                                  mov ax,0x1BCD
+   263 000001D1 E90000                                  jmp down_loop
+   264                                  
+   265 000001D4 268905                  down_loop:      mov [es:di],ax
+   266 000001D7 81EF0200                                sub di,2
+   267 000001DB 81FF000F                                cmp di,0x0F00
+   268 000001DF 7DF3                                    jge down_loop
+   269 000001E1 81C70200                                add di,2
+   270 000001E5 B8BA1B                                  mov ax,0x1BBA
+   271 000001E8 E90000                                  jmp left_loop
+   272                                  
+   273 000001EB 268905                  left_loop:      mov [es:di],ax
+   274 000001EE 81EFA000                                sub di,160
+   275 000001F2 81FF0000                                cmp di,0
+   276 000001F6 7FF3                                    jg left_loop
+   277                                                  ; correcting borders, i think if i first compare in loop and make the borders in loop
+   278                                                  ; that would be more computationaly expensive
+   279 000001F8 BF0000                                  mov di,0        ; top left
+   280 000001FB B8C91B                                  mov ax,0x1BC9   
+   281 000001FE 268905                                  mov [es:di],ax
+   282 00000201 BF9E00                                  mov di,158      ; top right
+   283 00000204 B8BB1B                                  mov ax,0x1BBB
+   284 00000207 268905                                  mov [es:di],ax
+   285 0000020A BF9E0F                                  mov di,3998     ; bottom right
+   286 0000020D B8BC1B                                  mov ax,0x1BBC
+   287 00000210 268905                                  mov [es:di],ax
+   288 00000213 BF000F                                  mov di,0x0F00   ;bottom left
+   289 00000216 B8C81B                                  mov ax,0x1BC8
+   290 00000219 268905                                  mov [es:di],ax
+   291 0000021C E90000                                  jmp panes
+   292                                  
+   293 0000021F BF5000                  panes:  mov di,80
+   294 00000222 BE4E00                          mov si,78
+   295 00000225 B8BA1B                          mov ax,1BBAh
+   296 00000228 268904                  @here   mov [es:si],ax
+   297 0000022B 268905                          mov [es:di],ax
+   298 0000022E 81C6A000                        add si,160
+   299 00000232 81C7A000                        add di,160
+   300 00000236 81FF000F                        cmp di,0x0F00
+   301 0000023A 7EEC                            jle @here
+   302                                          ; now correcting the boundries of the panes
+   303 0000023C BF4E00                          mov di,78       ; for the ╗ of left pane
+   304 0000023F B8BB1B                          mov ax,0x1BBB
+   305 00000242 268905                          mov [es:di],ax
+   306 00000245 81C70200                        add di,2        ; for the ╔ of right pane
+   307 00000249 B8C91B                          mov ax,0x1BC9
+   308 0000024C 268905                          mov [es:di],ax
+   309 0000024F BF4E0F                          mov di,0x0F4E   ; for the boundry of first pane's bottom right
+   310 00000252 B8BC1B                          mov ax,0x1BBC
+   311 00000255 268905                          mov [es:di],ax
+   312 00000258 81C70200                        add di,2        ; for the boundry of second pane's bottom left
+   313 0000025C B8C81B                          mov ax,0x1BC8
+   314 0000025F 268905                          mov [es:di],ax
+   315 00000262 E90000                          jmp return_boundry
+   316                                  
+   317 00000265 5E                      return_boundry: pop si
+   318 00000266 5F                                      pop di
+   319 00000267 07                                      pop es
+   320 00000268 58                                      pop ax
+   321 00000269 5D                                      pop bp
+   322 0000026A C3                                      ret
+   323                                  
+   324                                  
+   325                                  
+   326 0000026B 55                      print:  push bp
+   327 0000026C 89E5                            mov bp,sp
+   328 0000026E 50                              push ax
+   329 0000026F 53                              push bx
+   330 00000270 56                              push si
+   331 00000271 57                              push di
+   332 00000272 06                              push es
+   333 00000273 31F6                            xor si,si
+   334 00000275 31FF                            xor di,di
+   335 00000277 B800B8                          mov ax,0xb800
+   336 0000027A 8EC0                            mov es,ax
+   337 0000027C 31C0                            xor ax,ax
+   338 0000027E 31DB                            xor bx,bx
+   339                                          
+   340 00000280 8B760A                          mov si,[bp+10]
+   341 00000283 B350                            mov bl,80
+   342 00000285 8A4606                          mov al,[bp+6]
+   343 00000288 F6E3                            mul bl
+   344 0000028A 8A5E04                          mov bl,[bp+4]
+   345 0000028D 01D8                            add ax,bx
+   346 0000028F D1E0                            shl ax,1
+   347 00000291 89C7                            mov di,ax
+   348 00000293 31C0                            xor ax,ax
+   349 00000295 8A6608                          mov ah,[bp+8]
+   350 00000298 E90000                          jmp print_loop
+   351                                  
+   352 0000029B 8A04                    print_loop:     mov al,[si]
+   353 0000029D 3C00                                    cmp al,0
+   354 0000029F 740A                                    jz return_print
+   355 000002A1 268905                                  mov [es:di],ax
+   356 000002A4 46                                      inc si
+   357 000002A5 81C70200                                add di,2
+   358 000002A9 EBF0                                    jmp print_loop
+   359                                  
+   360 000002AB 07                      return_print:   pop es
+   361 000002AC 5F                                      pop di
+   362 000002AD 5E                                      pop si
+   363 000002AE 5B                                      pop bx
+   364 000002AF 58                                      pop ax
+   365 000002B0 5D                                      pop bp
+   366 000002B1 C20800                                  ret 8
+   367                                  
+   368                                  
+   369 000002B4 55                      print_verticle: push bp
+   370 000002B5 89E5                                    mov bp,sp
+   371 000002B7 50                                      push ax
+   372 000002B8 53                                      push bx
+   373 000002B9 57                                      push di
+   374 000002BA 06                                      push es
+   375 000002BB B800B8                                  mov ax,0xb800
+   376 000002BE 8EC0                                    mov es,ax
+   377 000002C0 31C0                                    xor ax,ax
+   378 000002C2 31DB                                    xor bx,bx
+   379                                  
+   380                                                  ; calculated the position of the source from where we have to start printing
+   381 000002C4 8A4608                                  mov al,[bp+8]
+   382 000002C7 B350                                    mov bl,80
+   383 000002C9 F6E3                                    mul bl
+   384 000002CB 8A5E06                                  mov bl,[bp+6]
+   385 000002CE 01D8                                    add ax,bx
+   386 000002D0 D1E0                                    shl ax,1
+   387 000002D2 89C7                                    mov di,ax
+   388                                  
+   389 000002D4 31C0                                    xor ax,ax
+   390 000002D6 31DB                                    xor bx,bx
+   391                                  
+   392                                                 ; calculated the position of the destination uptil where we have to print
+   393 000002D8 8A4604                                  mov al,[bp+4]
+   394 000002DB B350                                    mov bl,80
+   395 000002DD F6E3                                    mul bl
+   396 000002DF 8A5E06                                  mov bl,[bp+6]
+   397 000002E2 01D8                                    add ax,bx
+   398 000002E4 D1E0                                    shl ax,1
+   399 000002E6 89C3                                    mov bx,ax
+   400                                                  
+   401                                                  ; moved the character and the attribute in the ax register
+   402 000002E8 8A460C                                  mov al,[bp+12]
+   403 000002EB 8A660A                                  mov ah,[bp+10]
+   404 000002EE E90000                                  jmp vert_loop
+   405                                  
+   406 000002F1 268905                  vert_loop:      mov [es:di],ax
+   407 000002F4 81C7A000                                add di,160
+   408 000002F8 39DF                                    cmp di,bx
+   409 000002FA 7EF5                                    jle vert_loop
+   410 000002FC E90000                                  jmp return_vert
+   411                                  
+   412 000002FF 07                      return_vert:    pop es
+   413 00000300 5F                                      pop di
+   414 00000301 5B                                      pop bx
+   415 00000302 58                                      pop ax
+   416 00000303 5D                                      pop bp
+   417 00000304 C20A00                                  ret 10
+   418                                  
+   419                                  
+   420                                  
+   421                                  
+   422 00000307 55                      print_horizontal:       push bp
+   423 00000308 89E5                                            mov bp,sp
+   424 0000030A 50                                              push ax
+   425 0000030B 53                                              push bx
+   426 0000030C 57                                              push di
+   427 0000030D 06                                              push es
+   428 0000030E B800B8                                          mov ax,0xb800
+   429 00000311 8EC0                                            mov es,ax
+   430 00000313 31C0                                            xor ax,ax
+   431 00000315 31DB                                            xor bx,bx
+   432                                  
+   433                                                          ; calculated the position of the source from where we have to start printing
+   434 00000317 8A4608                                          mov al,[bp+8]
+   435 0000031A B350                                            mov bl,80
+   436 0000031C F6E3                                            mul bl
+   437 0000031E 8A5E06                                          mov bl,[bp+6]
+   438 00000321 01D8                                            add ax,bx
+   439 00000323 D1E0                                            shl ax,1
+   440 00000325 89C7                                            mov di,ax
+   441                                  
+   442 00000327 31C0                                            xor ax,ax
+   443 00000329 31DB                                            xor bx,bx
+   444                                  
+   445                                                          ;calculated the position of the destination uptil where we have to print
+   446 0000032B 8A4608                                          mov al,[bp+8]
+   447 0000032E B350                                            mov bl,80
+   448 00000330 F6E3                                            mul bl
+   449 00000332 8A5E04                                          mov bl,[bp+4]
+   450 00000335 01D8                                            add ax,bx
+   451 00000337 D1E0                                            shl ax,1
+   452 00000339 89C3                                            mov bx,ax
+   453                                                  
+   454                                                          ; moved the character and the attribute in the ax register
+   455 0000033B 8A460C                                          mov al,[bp+12]
+   456 0000033E 8A660A                                          mov ah,[bp+10]
+   457 00000341 E90000                                          jmp hori_loop
+   458                                  
+   459 00000344 268905                  hori_loop:      mov [es:di],ax
+   460 00000347 81C70200                                add di,2
+   461 0000034B 39DF                                    cmp di,bx
+   462 0000034D 7EF5                                    jle hori_loop
+   463 0000034F E90000                                  jmp return_hori
+   464                                  
+   465 00000352 07                      return_hori:    pop es
+   466 00000353 5F                                      pop di
+   467 00000354 5B                                      pop bx
+   468 00000355 58                                      pop ax
+   469 00000356 5D                                      pop bp
+   470 00000357 C20A00                                  ret 10
+   471                                  
+   472                                  
+   473                                  
+   474 0000035A 55                      highlight_row:  push bp
+   475 0000035B 89E5                                    mov bp,sp
+   476 0000035D 50                                      push ax
+   477 0000035E 53                                      push bx
+   478 0000035F 52                                      push dx
+   479 00000360 56                                      push si
+   480 00000361 57                                      push di
+   481 00000362 06                                      push es
+   482                                  
+   483 00000363 B800B8                                  mov ax,0xb800
+   484 00000366 8EC0                                    mov es,ax
+   485 00000368 31DB                                    xor bx,bx
+   486 0000036A 31D2                                    xor dx,dx
+   487 0000036C 8B460E                                  mov ax,[bp+14]  ;active_pane
+   488 0000036F 3D0000                                  cmp ax,0
+   489 00000372 7403                                    jz left_pane
+   490 00000374 E91E00                                  jmp right_pane
+   491                                  
+   492 00000377 8B460C                  left_pane:      mov ax,[bp+12]
+   493 0000037A B350                                    mov bl,80
+   494 0000037C F6E3                                    mul bl
+   495 0000037E 89C2                                    mov dx,ax
+   496 00000380 8B5E0A                                  mov bx,[bp+10]  
+   497 00000383 01D8                                    add ax,bx       ; ax contains the starting index
+   498 00000385 D1E0                                    shl ax,1
+   499 00000387 8B5E08                                  mov bx,[bp+8]
+   500 0000038A 01DA                                    add dx,bx       ;dx contains the ending index
+   501 0000038C D1E2                                    shl dx,1
+   502 0000038E 89C6                                    mov si,ax
+   503 00000390 89D7                                    mov di,dx
+   504 00000392 E91E00                                  jmp highlight_loop
+   505                                  
+   506                                  
+   507 00000395 8B460C                  right_pane:     mov ax,[bp+12]
+   508 00000398 B350                                    mov bl,80
+   509 0000039A F6E3                                    mul bl
+   510 0000039C 89C2                                    mov dx,ax
+   511 0000039E 8B5E06                                  mov bx,[bp+6]
+   512 000003A1 01D8                                    add ax,bx
+   513 000003A3 D1E0                                    shl ax,1
+   514 000003A5 8B5E04                                  mov bx,[bp+4]
+   515 000003A8 01DA                                    add dx,bx
+   516 000003AA D1E2                                    shl dx,1
+   517 000003AC 89C6                                    mov si,ax
+   518 000003AE 89D7                                    mov di,dx
+   519 000003B0 E90000                                  jmp highlight_loop
+   520                                  
+   521 000003B3 268B04                  highlight_loop: mov ax,[es:si]
+   522 000003B6 B431                                    mov ah,31h
+   523 000003B8 268904                                  mov [es:si],ax
+   524 000003BB 81C60200                                add si,2
+   525 000003BF 39FE                                    cmp si,di
+   526 000003C1 7EF0                                    jle highlight_loop
+   527 000003C3 E90000                                  jmp return_highlight
+   528                                  
+   529 000003C6 07                      return_highlight:       pop es
+   530 000003C7 5F                                              pop di
+   531 000003C8 5E                                              pop si
+   532 000003C9 5A                                              pop dx
+   533 000003CA 5B                                              pop bx
+   534 000003CB 58                                              pop ax
+   535 000003CC 5D                                              pop bp
+   536 000003CD C20C00                                          ret 12
+   537                                  
+   538                                  
+   539                                                  
+   540                                  
+   541                                  
+   542                                  
+   543                                  
+   544                                  
+   545                                  
+   546                                  
+   547                                  
+   548                                  
+   549                                  
+   550                                  
+   551                                  
+   552                                  
+   553 000003D0 B400                    exit:   mov ah, 00h
+   554 000003D2 CD16                            int 16h
+   555 000003D4 B8004C                          mov ax,4c00h
+   556 000003D7 CD21                            int 21h
+   557                                  
+   558                                  
+   559 000003D9 4E616D6500              Mystr1: db "Name",0
+   560 000003DE 1E                      attribute: db 0x1E
+   561 000003DF 01                      row1:  db 1
+   562 000003E0 08                      cols1: db 8
+   563                                  
+   564                                  
+   565 000003E1 53697A6500              Mystr2: db "Size",0
+   566 000003E6 01                      row2:  db 1
+   567 000003E7 18                      cols2: db 24 
+   568                                  
+   569                                  
+   570 000003E8 4461746500              Mystr3: db "Date",0
+   571 000003ED 01                      row3:  db 1
+   572 000003EE 21                      cols3: db 33
+   573                                  
+   574 000003EF 01                      row4: db 1  
+   575 000003F0 30                      cols4: db 48
+   576                                  
+   577 000003F1 01                      row5: db 1
+   578 000003F2 40                      cols5: db 64
+   579                                  
+   580 000003F3 01                      row6: db 1
+   581 000003F4 49                      cols6: db 73
+   582                                  
+   583                                  
+   584 000003F5 B3                      Mychar: db 0xB3
+   585 000003F6 1B                      attr: db 0x1B
+   586                                  
+   587 000003F7 01                      v_row1: db 1
+   588 000003F8 1E                      v_cols1: db 30
+   589 000003F9 16                      dest_row1: db 22
+   590                                  
+   591                                  
+   592 000003FA 01                      v_row2: db 1
+   593 000003FB 14                      v_cols2: db 20
+   594 000003FC 16                      dest_row2: db 22
+   595                                  
+   596                                  
+   597 000003FD 01                      v_row3: db 1
+   598 000003FE 46                      v_cols3: db 70
+   599 000003FF 16                      dest_row3: db 22
+   600                                  
+   601 00000400 01                      v_row4: db 1
+   602 00000401 3C                      v_cols4: db 60
+   603 00000402 16                      dest_row4: db 22
+   604                                  
+   605                                  
+   606                                  
+   607                                  
+   608 00000403 C4                      h_Mychar: db 0xC4
+   609 00000404 1B                      h_attr: db 0x1B
+   610 00000405 16                      h_row: db 22
+   611 00000406 01                      h_cols: db 1
+   612 00000407 4E                      dest_col: db 78
+   613                                  
+   614                                  
+   615                                  ;===============================================================================================================
+   616                                  
+   617 00000408 01                      active_pane: db 1
+   618 00000409 02                      current_row: db 2
+   619 0000040A 01                      l_start_cols: db 1
+   620 0000040B 26                      l_end_cols: db 38
+   621 0000040C 29                      r_start_cols: db 41
+   622 0000040D 4E                      r_end_cols: db 78
+   623                                  
+   624 0000040E 01                      previous_row: db 1
