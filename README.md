@@ -55,3 +55,28 @@ navigation meaning that if the number of file exceeds the limit of rows on which
 down to view more and when i scroll back up the previous files will be loaded.
 After i successfully do this, i will move onto the directories issue and than the file reading , file writing 
 and file editing and if later i want i can also add a column showing the extensions of the files.
+
+##### Solution to the problems
+###### File Reading
+Currently i am making mock data of lists of files. My mock file structure is as follows
+ 32-BYTE MOCK FILE SYSTEM DATA
+ [0-12]  : Filename string (13 bytes max, null terminated)
+ [13]    : Attribute (00h = Normal File, 10h = Directory)
+ [14-17] : File Size (DWORD - 4 bytes)
+ [18-19] : MS-DOS Date Word (Bits: YYYYYYY MMMMDDDDD)
+ [20-21] : MS-DOS Time Word (Bits: HHHHHMMMMMMSSSSS)
+ [22-31] : Reserved Padding (10 bytes)
+
+ This is a clean 32-byte structure. The advantages of this structure are:
+- Much faster: we dont have to use MUL instructions as we have just use shift instructions
+- Memory Efficient: Very small RAM wastage as compared to 43-bytes DTA file structure
+
+The original file structure that DOS extracts from the DOS API service INT 21h
+[0–20]  reserved
+[21]    attribute
+[22–23] time
+[24–25] date
+[26–29] size
+[30–42] filename ("FILE.TXT")
+
+So right now we can use the mock file format as it is alot faster and later whem we use the original files we will create an intermediate subroutine that will extract the required data i.e name,date,size,format from the original file structure and format them in our structure so later we dont have to rewrite the entire extraction subroutine
