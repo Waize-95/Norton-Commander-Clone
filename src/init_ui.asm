@@ -10,7 +10,7 @@ initialize_ui:  call blue_background
                 push ax
                 mov ax,[cols1]
                 push ax
-                call print
+                call print  
 
 
                 mov ax,Mystr2

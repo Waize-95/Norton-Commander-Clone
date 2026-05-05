@@ -2,6 +2,7 @@ org 100h
 jmp start
 
 start:  call initialize_ui
+        call file_extract
         call main_highlight
         jmp main_loop
 
@@ -25,7 +26,7 @@ main_loop:      mov ah,00h      ;waiting for the user to press the key
 
 
 switch_panes:   call main_unhighlight
-                xor byte [active_pane],1
+                xor byte [active_pane],1        
                 jmp main_highlight
 
 
@@ -106,4 +107,5 @@ exit:
 %include "helper.asm"
 %include "help_ui.asm"
 %include "logic.asm"
+%include "extract.asm"
 %include "data.asm"

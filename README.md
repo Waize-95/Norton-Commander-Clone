@@ -60,12 +60,12 @@ and file editing and if later i want i can also add a column showing the extensi
 ###### File Reading
 Currently i am making mock data of lists of files. My mock file structure is as follows
  32-BYTE MOCK FILE SYSTEM DATA
-- 8[0-12]  : Filename string (13 bytes max, null terminated)
-- 8[13]    : Attribute (00h = Normal File, 10h = Directory)
-- 8[14-17] : File Size (DWORD - 4 bytes)
-- 8[18-19] : MS-DOS Date Word (Bits: YYYYYYY MMMMDDDDD)
-- 8[20-21] : MS-DOS Time Word (Bits: HHHHHMMMMMMSSSSS)
-- 8[22-31] : Reserved Padding (10 bytes)
+- [0-12]  : Filename string (13 bytes max, null terminated)
+- [13]    : Attribute (00h = Normal File, 10h = Directory)
+- [14-17] : File Size (DWORD - 4 bytes)
+- [18-19] : MS-DOS Date Word (Bits: YYYYYYY MMMMDDDDD)
+- [20-21] : MS-DOS Time Word (Bits: HHHHHMMMMMMSSSSS)
+- [22-31] : Reserved Padding (10 bytes)
 
  This is a clean 32-byte structure. The advantages of this structure are:
 - Much faster: we dont have to use MUL instructions as we have just use shift instructions
