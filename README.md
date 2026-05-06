@@ -92,3 +92,6 @@ and still i have to do something for the scrolling feature.
 ![alt text](media/image-4.png)
 
 Now the entire list is fetched on both of the screens, now the only issue left is the addition of scrolling feature after that we can move forward and implement the navigation(path,folders etc) and the file reading and maybe editing feature
+
+##### issue
+When the size of the file is 1 Mb or greater the program stops, look into it as well
