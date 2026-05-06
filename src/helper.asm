@@ -151,6 +151,7 @@ print_number:   push bp
                 push ax
                 push bx
                 push cx
+                push dx
                 push si
                 push di
                 push es
@@ -173,21 +174,21 @@ print_number:   push bp
 
                 mov ax,[bp+12]  ; as the number can be 32 byte, half will be in ax and other half in dx
                 mov dx,[bp+10]  ; the higher number
-                mov bl,10
+                mov bx,10
                 jmp push_loop
 
 push_loop:      div bx
+                add dx,0x30
                 push dx
                 inc cx
                 cmp ax,0
                 je num_printing
                 xor dx,dx
-                mov dh,0x1B
                 jmp push_loop
 
 num_printing:   pop ax
-                mov dl,al
-                mov [es:di],dx
+                mov ah,[bp+8]
+                mov [es:di],ax
                 add di,2
                 sub cx,1
                 jnz num_printing
@@ -196,9 +197,48 @@ num_printing:   pop ax
 return_num:     pop es
                 pop di
                 pop si
+                pop dx
                 pop cx
                 pop bx
                 pop ax
                 pop bp
                 ret 10
+
+
+
+print_character:        push bp
+                        mov bp,sp
+                        push ax
+                        push bx
+                        push di
+                        push es
+                        xor bx,bx
+                        xor ax,ax
+                        xor di,di
+                        mov ax,0xb800
+                        mov es,ax
+
+                        mov ax,[bp+6]   ;row
+                        mov bl,80
+                        mul bl
+                        mov bx,[bp+4]   ;col
+                        add ax,bx
+                        shl ax,1
+                        mov di,ax
+                        mov bx,[bp+8]   ;attribute
+                        mov ah,bl
+                        mov bx,[bp+10]  ; char
+                        mov al,bl
+
+                        mov [es:di],ax
+                        jmp return_print_character
+
+return_print_character: pop es
+                        pop di
+                        pop bx
+                        pop ax
+                        pop bp
+                        ret 8
+
+
 
