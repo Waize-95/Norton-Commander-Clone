@@ -4,6 +4,8 @@ file_extract:   push bp
                 mov bp,sp
                 push ax
                 push bx
+                push cx
+                push dx
                 push di
                 push si
                 push es
@@ -12,16 +14,27 @@ file_extract:   push bp
                 xor ax,ax
                 xor si,si
                 xor di,di
+                mov di,[bp+4]
+                mov cx,2
                 mov si,file_list
-                jmp extract_name    ; name is 13 bytesa
+                jmp extract_loop    ; name is 13 bytes
+
+extract_loop:   mov al,[si]
+                cmp al,0FFh ; is this the end?
+                je near return_file_extract
+
+                cmp cx,22   ; have we hit the end row
+                je near return_file_extract
+
+                jmp extract_name
 
 extract_name:   mov ax,si
                 push ax
                 mov ax,0x1B
                 push ax
-                mov ax,2
+                mov ax,cx
                 push ax
-                mov ax,1
+                mov ax,di
                 push ax
                 call print
                 jmp extract_size
@@ -32,9 +45,10 @@ extract_size:   mov ax,[si+14]
                 push ax
                 mov ax,0x1B
                 push ax
-                mov ax,2
+                mov ax,cx
                 push ax
-                mov ax,21
+                mov ax,di
+                add ax,20
                 push ax
                 call print_number
                 jmp extract_date
@@ -49,9 +63,10 @@ extract_date:   mov ax,[si+18]
                 push ax
                 mov ax,0x1B
                 push ax
-                mov ax,2
+                mov ax,cx
                 push ax
-                mov ax,31
+                mov ax,di
+                add ax,30
                 push ax
                 call print_number
 
@@ -60,15 +75,16 @@ extract_date:   mov ax,[si+18]
                 and ax, 000Fh
 
                 cmp ax,10
-                jl print_leading_zero2
+                jl near print_leading_zero2
                 push ax
                 mov ax,0
                 push ax
                 mov ax,0x1B
                 push ax
-                mov ax,2
+                mov ax,cx
                 push ax
-                mov ax,34
+                mov ax,di
+                add ax,33
                 push ax
                 call print_number
 
@@ -81,20 +97,27 @@ extract_date:   mov ax,[si+18]
                 push ax
                 mov ax,0x1B
                 push ax
-                mov ax,2
+                mov ax,cx
                 push ax
-                mov ax,37
+                mov ax,di
+                add ax,36
                 push ax
                 call print_number
                 jmp print_dashes
+@return_from_dashes:    add si,32
+                        inc cx
+                        jmp extract_loop                
+
 
 return_file_extract:    pop es
                         pop si
                         pop di
+                        pop dx
+                        pop cx
                         pop bx
                         pop ax
                         pop bp
-                        ret
+                        ret 2
 
 
 
@@ -103,9 +126,10 @@ print_leading_zero1: xor ax,ax
                     push ax
                     mov ax,0x1B
                     push ax
-                    mov ax,2
+                    mov ax,cx
                     push ax
-                    mov ax,31
+                    mov ax,di
+                    add ax,30
                     push ax
                     call print_character
 
@@ -117,9 +141,10 @@ print_leading_zero1: xor ax,ax
                     push ax
                     mov ax,0x1B
                     push ax
-                    mov ax,2
+                    mov ax,cx
                     push ax
-                    mov ax,32
+                    mov ax,di
+                    add ax,31
                     push ax
                     call print_number
                     jmp @leading_here
@@ -130,9 +155,10 @@ print_leading_zero2: xor ax,ax
                     push ax
                     mov ax,0x1B
                     push ax
-                    mov ax,2
+                    mov ax,cx
                     push ax
-                    mov ax,34
+                    mov ax,di
+                    add ax,33
                     push ax
                     call print_character
 
@@ -144,9 +170,10 @@ print_leading_zero2: xor ax,ax
                     push ax
                     mov ax,0x1B
                     push ax
-                    mov ax,2
+                    mov ax,cx
                     push ax
-                    mov ax,35
+                    mov ax,di
+                    add ax,34
                     push ax
                     call print_number
                     jmp @leading_here2
@@ -156,9 +183,10 @@ print_dashes:   xor ax,ax
                 push ax
                 mov ax,0x1B
                 push ax
-                mov ax,2
+                mov ax,cx
                 push ax
-                mov ax,33
+                mov ax,di
+                add ax,32
                 push ax
                 call print_character
 
@@ -167,9 +195,10 @@ print_dashes:   xor ax,ax
                 push ax
                 mov ax,0x1B
                 push ax
-                mov ax,2
+                mov ax,cx
                 push ax
-                mov ax,36
+                mov ax,di
+                add ax,35
                 push ax
                 call print_character
-                jmp return_file_extract
+                jmp @return_from_dashes

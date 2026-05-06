@@ -124,7 +124,7 @@ file_list:
     db "NORTON.EXE", 0, 0, 0     ; Name
     db 00h                       ; Attribute (File)
     dd 15360                     ; Size
-    dw 2021h                     ; Date: Jan 1, 1996
+    dw 5A21h                     ; Date: Jan 1, 1996
     dw 0000h                     ; Time: 00:00:00
     times 10 db 0
 
@@ -161,7 +161,7 @@ file_list:
     times 10 db 0
 
     ; --- ROW 12 ---
-    db "SYSTEM", 0, 0, 0, 0, 0, 0 ; Name
+    db "SYSTEM", 0, 0, 0, 0, 0, 0, 0 ; Name
     db 10h                       ; Attribute (DIRECTORY!)
     dd 0                         ; Size
     dw 5A21h                     ; Date: Jan 1, 2025
@@ -201,7 +201,7 @@ file_list:
     times 10 db 0
 
     ; --- ROW 17 ---
-    db "DOCS", 0, 0, 0, 0, 0, 0, 0, 0 ; Name
+    db "DOCS", 0, 0, 0, 0, 0, 0, 0, 0, 0 ; Name
     db 10h                       ; Attribute (DIRECTORY!)
     dd 0                         ; Size
     dw 5C2Ah                     ; Date: Jan 10, 2026
@@ -211,9 +211,9 @@ file_list:
     ; --- ROW 18 ---
     db "MANUAL.PDF", 0, 0, 0     ; Name
     db 00h                       ; Attribute (File)
-    dd 1048576                   ; Size (1 Megabyte!)
+    dd 12400                   ; Size (1 Megabyte!)
     dw 5C2Ch                     ; Date: Jan 12, 2026
-    dw 5000h                     ; Time: 10:00:00
+    dw 5000h                     ; Time: 10:00:00   
     times 10 db 0
 
     ; --- ROW 19 ---

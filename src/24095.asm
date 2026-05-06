@@ -2,7 +2,12 @@ org 100h
 jmp start
 
 start:  call initialize_ui
+        mov ax,1                ; the left_pane
+        push ax
         call file_extract
+        mov ax,41
+        push ax
+        call file_extract       ; the right_pane
         call main_highlight
         jmp main_loop
 
