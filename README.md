@@ -80,3 +80,10 @@ The original file structure that DOS extracts from the DOS API service INT 21h
 - [30–42] filename ("FILE.TXT")
 
 So right now we can use the mock file format as it is alot faster and later whem we use the original files we will create an intermediate subroutine that will extract the required data i.e name,date,size,format from the original file structure and format them in our structure so later we dont have to rewrite the entire extraction subroutine
+
+##### - Day-5 Report
+
+I have successfully implemented the file fetching system, but right now it is only for one single file, i still have to loop it and make it fetch all the files in the systems, on top of that the logic has yet to be refined right now what i am doing is i have made a helper function "print_character" and everytime for date and month i check if the date or month is less than 10, if yes i call the "print_function" two times and print the leading zeros on the exact spots, else i just print the dates and months straight up. One more thing is that to fomrmat the date i have to print the dashes i.e DD-MM-YY, so for these two dashes i am again calling the "print_character" funtions twice, so in short to print the date of one single file in the worst case, i have to call "print_character" function 4 times and i than have to call the "print_number" function 3 times to print the date,month and the year.
+
+My next steps are first to make it into a loop so it fetches all the files instead of just one single file
+and still i have to do something for the scrolling feature.
