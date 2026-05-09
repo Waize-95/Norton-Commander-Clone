@@ -1,7 +1,8 @@
 org 100h
 jmp start
 
-start:  call initialize_ui
+start:  call load_directories
+        call initialize_ui
         mov ax,1                ; the left_pane
         push ax
         call file_extract
@@ -108,6 +109,7 @@ exit:
 
 
 
+%include "dirs.asm"
 %include "init_ui.asm"
 %include "helper.asm"
 %include "help_ui.asm"
