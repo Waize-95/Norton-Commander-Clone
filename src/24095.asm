@@ -28,6 +28,9 @@ main_loop:      mov ah,00h      ;waiting for the user to press the key
                 cmp ah,50h
                 je move_down
 
+                cmp al,0Dh
+                je near enter_directory
+
                 jmp main_loop   ;if any other key is pressed just wait again
 
 

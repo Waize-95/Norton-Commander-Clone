@@ -77,3 +77,49 @@ return_dirs:    pop di
                 ret
     
 
+
+
+enter_directory:    push ax
+                    push bx
+                    push dx
+                    push si
+                    xor ax,ax
+                    xor bx,bx
+                    
+                    mov ax,[current_row]
+                    sub ax,2
+                    mov bl,32
+                    mul bl
+                    mov bx,ax
+                    mov si,file_list
+                    xor ax,ax
+                    mov ax,[si+bx+13]
+                    cmp al,10h
+                    jne return_enterdir
+
+                    mov dx,si
+                    add dx,bx
+                    mov ah,3Bh
+                    int 21h
+                    jc dir_error
+
+                    pop si
+                    pop dx
+                    pop bx
+                    pop ax
+                    jmp start
+
+dir_error:  jmp main_loop
+
+return_enterdir:    pop si
+                    pop dx
+                    pop bx
+                    pop ax
+                    jmp main_loop
+                    
+
+                    
+
+
+
+
