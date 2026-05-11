@@ -95,3 +95,19 @@ Now the entire list is fetched on both of the screens, now the only issue left i
 
 ##### issue
 When the size of the file is 1 Mb or greater the program stops, look into it as well
+
+
+##### - Day-8 Report
+
+Now i have successfully created a fully functional file navigator
+i can move into a folder and view its content and i can also climmb up a folder and navigate in my drive successfully
+Showing my current folder
+![alt text](media/image-5.png)
+Moving down into the folder h
+![alt text](media/image-6.png)
+
+###### Next Steps
+1- seperate this file navigation for both of the panes
+2- fix the file size issue
+3- view file contents
+
