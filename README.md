@@ -111,3 +111,14 @@ Moving down into the folder h
 2- fix the file size issue
 3- view file contents
 
+
+##### - Day-9 Report
+Finally resolved the issue of navigation in seperate panes, what i had to do was
+1- make two different memory arrays for storing files of different panes
+2- store their absolute path for different panes
+3- pass the panes through stack in load_directories and enter_directories
+4- had to decouple the starting logic, in the beginning the arrays will be populated the folder that is opened by the user in both of the panes, after that we make the subroutine "refresh_ui", so when i call refresh_ui from load_directory and enter_directory instead of populating the left_file_list and the right_file_list from the start again, i can just read the lists and the path which i saved while entering a folder and call the refresh_ui that fetches the path and the files and display it inside the pane
+
+
+Seperate navigation for both panes:
+![alt text](media/image-7.png)
