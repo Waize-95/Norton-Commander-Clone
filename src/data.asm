@@ -68,6 +68,7 @@ r_end_cols: db 78
 ;===============================================================================================================
 
 
+
 ; -------------------------------------------------------------------
 ; 32-BYTE MOCK FILE SYSTEM DATA
 ; [0-12]  : Filename string (13 bytes max, null terminated)
@@ -81,7 +82,12 @@ r_end_cols: db 78
 
 search_string db "*.*",0
 dta_buffer  times 43 db 0
-file_list:
+left_file_list:
+
+    times 640 db 0
+    ; --- END OF ARRAY MARKER ---
+    db 0FFh                      ; End Marker
+right_file_list:
 
     times 640 db 0
     ; --- END OF ARRAY MARKER ---
@@ -99,3 +105,14 @@ file_list:
 ;Bytes 26 to 29 (4 bytes): The File Size. (The lower 16-bits are at Byte 26, the upper 16-bits are at Byte 28).
 
 ;Bytes 30 to 42 (13 bytes): The File Name as a null-terminated string.
+
+
+;=================================================================================================================
+left_path:      db '\'              ; Hardcoded root backslash
+               times 64 db 0       ; 64 bytes of empty space for the rest of the path
+
+right_path:     db '\'              ; Hardcoded root backslash
+               times 64 db 0       ; 64 bytes of empty space for the rest of the path
+
+
+;=================================================================================================================

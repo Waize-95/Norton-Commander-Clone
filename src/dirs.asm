@@ -20,8 +20,18 @@ load_directories:   push ax
 
                     xor si,si
                     xor di,di
-                    mov di,file_list
+                    cmp byte [active_pane],0
+                    jne second_pane
+
+                    mov di,left_file_list
                     xor bx,bx
+                    jmp copy_loop
+
+
+second_pane:    mov di,right_file_list
+                xor bx,bx
+                jmp copy_loop
+
 
 copy_loop:  mov al,[dta_buffer+21]  ;attribute
             mov [di+13],al
@@ -91,7 +101,13 @@ enter_directory:    push ax
                     mov bl,32
                     mul bl
                     mov bx,ax
-                    mov si,file_list
+
+                    cmp byte [active_pane],0
+                    jne second_pane_dir
+                    mov si,left_file_list
+
+
+@here_second_pane_dir:
                     xor ax,ax
                     mov ax,[si+bx+13]
                     cmp al,10h
@@ -107,16 +123,22 @@ enter_directory:    push ax
                     pop dx
                     pop bx
                     pop ax
-                    jmp start
+                    
+                    call load_directories
+                    jmp refresh_screens
 
 dir_error:  jmp main_loop
+
+second_pane_dir:    mov si,right_file_list
+                    jmp @here_second_pane_dir
 
 return_enterdir:    pop si
                     pop dx
                     pop bx
                     pop ax
+                    call load_directories
                     jmp main_loop
-                    
+
 
                     
 

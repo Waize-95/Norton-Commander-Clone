@@ -147,6 +147,4 @@ fix_boundry:    mov ax,0xb800
                 mov [es:di],ax
                 add di,20
                 mov [es:di],ax
-
-
                 ret

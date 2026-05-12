@@ -14,10 +14,16 @@ file_extract:   push bp
                 xor ax,ax
                 xor si,si
                 xor di,di
-                mov di,[bp+4]
+                mov di,[bp+4]      ; screen column for this pane
                 mov cx,2
-                mov si,file_list
+                mov ax,[bp+6]      ; explicit pane index (0 = left, 1 = right)
+                cmp ax,0
+                jne second_pane_ext
+                mov si,left_file_list
                 jmp extract_loop    ; name is 13 bytes
+
+second_pane_ext:    mov si,right_file_list
+                    jmp extract_loop
 
 extract_loop:   mov al,[si]
                 cmp al,0FFh ; is this the end?
@@ -117,7 +123,7 @@ return_file_extract:    pop es
                         pop bx
                         pop ax
                         pop bp
-                        ret 2
+                        ret 4
 
 
 

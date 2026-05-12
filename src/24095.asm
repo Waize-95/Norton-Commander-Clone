@@ -1,14 +1,40 @@
 org 100h
 jmp start
 
-start:  call load_directories
+start:  
+
+        mov ah, 47h
+        mov dl, 0
+        mov si, left_path + 1
+        int 21h
+
+        mov ah, 47h
+        mov dl, 0
+        mov si, right_path + 1
+        int 21h
+
+        mov byte [active_pane],1
+        call load_directories
+
+        mov byte [active_pane],0
+        call load_directories
+
+refresh_screens:
+
+
         call initialize_ui
-        mov ax,1                ; the left_pane
+        mov ax,0                ; pane index: left pane
+        push ax
+        mov ax,1                ; screen column: left pane
         push ax
         call file_extract
-        mov ax,41
+
+        mov ax,1                ; pane index: right pane
         push ax
-        call file_extract       ; the right_pane
+        mov ax,41               ; screen column: right pane
+        push ax
+        call file_extract  
+
         call main_highlight
         jmp main_loop
 
@@ -35,9 +61,38 @@ main_loop:      mov ah,00h      ;waiting for the user to press the key
 
 
 switch_panes:   call main_unhighlight
-                xor byte [active_pane],1        
-                jmp main_highlight
+                cmp byte [active_pane],0     
+                je switch_to_right_pane
 
+switch_to_left_pane:    mov ah,47h
+                        mov dl,0
+                        mov si,right_path+1
+                        int 21h
+
+                        mov byte [active_pane],0
+
+                        mov ah,3Bh
+                        mov dx,left_path
+                        int 21h
+                        jmp end_switch
+
+switch_to_right_pane:   mov ah,47h      ; store the current directory in the buffer i gave
+                        mov dl,0        ; 0 = Default Drive
+                        mov si,left_path+1      ; +1 skips our hardcoded '\'
+                        int 21h
+
+                        mov byte [active_pane],1
+
+                        mov ah,3Bh
+                        mov dx,right_path       ; do not include the +1 as we are just reading the path
+                        int 21h
+                        jmp end_switch
+
+
+
+end_switch:     jmp main_highlight
+
+        
 
 move_up:        call main_unhighlight
                 mov al,[current_row]
