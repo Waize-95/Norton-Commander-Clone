@@ -127,3 +127,7 @@ Seperate navigation for both panes:
 ##### - Day-10 Report
 The file size issue has been resolved too, if the file size was very large say 800 kb, we divided the whole number the
 10 and expected the quotient to come in AX, but ax can only hold 65536 bytes and out quotient was almost 10 folds of that, so now we use long division, (we divide the upper byte and store the remiander in dx and leave the AX as it is and than again use DX:AX for the division instead of just AX). This has resolved the issue
+
+#####  More ideas
+- Write the extensions of files infront of their filenames
+- Write the file sizes in KB or MB instead of just bytes
