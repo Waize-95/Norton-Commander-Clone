@@ -177,14 +177,26 @@ print_number:   push bp
                 mov bx,10
                 jmp push_loop
 
-push_loop:      div bx
+push_loop:      mov ax,[bp+10]  ;  the issue why we were not able to print the file with bigger sizes was 
+                xor dx,dx       ;  here, previously we did division now we are doing long division
+                div bx          ;  the upper byte gets divided the remainder is stored in dx, adn the rest of the 
+                mov [bp+10],ax  ;  the number(LOWER BYTE) is stored in AX just like we do in long division.
+
+                mov ax,[bp+12]
+                div bx
+                mov [bp+12],ax
+
                 add dx,0x30
                 push dx
                 inc cx
-                cmp ax,0
-                je num_printing
-                xor dx,dx
-                jmp push_loop
+
+                cmp word [bp+10],0
+                jne push_loop
+
+                cmp word [bp+12],0
+                jne push_loop
+
+                jmp num_printing
 
 num_printing:   pop ax
                 mov ah,[bp+8]

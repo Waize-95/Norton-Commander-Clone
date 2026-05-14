@@ -122,3 +122,8 @@ Finally resolved the issue of navigation in seperate panes, what i had to do was
 
 Seperate navigation for both panes:
 ![alt text](media/image-7.png)
+
+
+##### - Day-10 Report
+The file size issue has been resolved too, if the file size was very large say 800 kb, we divided the whole number the
+10 and expected the quotient to come in AX, but ax can only hold 65536 bytes and out quotient was almost 10 folds of that, so now we use long division, (we divide the upper byte and store the remiander in dx and leave the AX as it is and than again use DX:AX for the division instead of just AX). This has resolved the issue
