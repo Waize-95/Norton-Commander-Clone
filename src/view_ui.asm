@@ -24,6 +24,11 @@ reading_loop:
 
             mov bx, ax      ; SAVE AX before we ruin it
 
+            cmp bx, 0
+            je next_page
+
+            call blue_background
+
             mov ax,file_buffer
             push ax
             mov ax,[attribute]
@@ -34,11 +39,7 @@ reading_loop:
             push ax
             call print
 
-            cmp bx,0        ; CHECK BX instead of AX
-            jg next_page
-
-            mov ah,00h
-            int 16h
+            jmp next_page
 
 
 

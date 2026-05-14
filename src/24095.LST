@@ -5,18 +5,18 @@
      5                                  
      6 00000003 B447                            mov ah, 47h
      7 00000005 B200                            mov dl, 0
-     8 00000007 BE[5A0E]                        mov si, left_path + 1
+     8 00000007 BE[5C0E]                        mov si, left_path + 1
      9 0000000A CD21                            int 21h
     10                                  
     11 0000000C B447                            mov ah, 47h
     12 0000000E B200                            mov dl, 0
-    13 00000010 BE[9B0E]                        mov si, right_path + 1
+    13 00000010 BE[9D0E]                        mov si, right_path + 1
     14 00000013 CD21                            int 21h
     15                                  
-    16 00000015 C606[2209]01                    mov byte [active_pane],1
+    16 00000015 C606[2409]01                    mov byte [active_pane],1
     17 0000001A E8FD00                          call load_directories
     18                                  
-    19 0000001D C606[2209]00                    mov byte [active_pane],0
+    19 0000001D C606[2409]00                    mov byte [active_pane],0
     20 00000022 E8F500                          call load_directories
     21                                  
     22                                  refresh_screens:
@@ -61,30 +61,30 @@
     61                                  
     62                                  
     63 00000064 E88E00                  switch_panes:   call main_unhighlight
-    64 00000067 803E[2209]00                            cmp byte [active_pane],0     
+    64 00000067 803E[2409]00                            cmp byte [active_pane],0     
     65 0000006C 7418                                    je switch_to_right_pane
     66                                  
     67 0000006E B447                    switch_to_left_pane:    mov ah,47h
     68 00000070 B200                                            mov dl,0
-    69 00000072 BE[9B0E]                                        mov si,right_path+1
+    69 00000072 BE[9D0E]                                        mov si,right_path+1
     70 00000075 CD21                                            int 21h
     71                                  
-    72 00000077 C606[2209]00                                    mov byte [active_pane],0
+    72 00000077 C606[2409]00                                    mov byte [active_pane],0
     73                                  
     74 0000007C B43B                                            mov ah,3Bh
-    75 0000007E BA[590E]                                        mov dx,left_path
+    75 0000007E BA[5B0E]                                        mov dx,left_path
     76 00000081 CD21                                            int 21h
     77 00000083 E91800                                          jmp end_switch
     78                                  
     79 00000086 B447                    switch_to_right_pane:   mov ah,47h      ; store the current directory in the buffer i gave
     80 00000088 B200                                            mov dl,0        ; 0 = Default Drive
-    81 0000008A BE[5A0E]                                        mov si,left_path+1      ; +1 skips our hardcoded '\'
+    81 0000008A BE[5C0E]                                        mov si,left_path+1      ; +1 skips our hardcoded '\'
     82 0000008D CD21                                            int 21h
     83                                  
-    84 0000008F C606[2209]01                                    mov byte [active_pane],1
+    84 0000008F C606[2409]01                                    mov byte [active_pane],1
     85                                  
     86 00000094 B43B                                            mov ah,3Bh
-    87 00000096 BA[9A0E]                                        mov dx,right_path       ; do not include the +1 as we are just reading the path
+    87 00000096 BA[9C0E]                                        mov dx,right_path       ; do not include the +1 as we are just reading the path
     88 00000099 CD21                                            int 21h
     89 0000009B E90000                                          jmp end_switch
     90                                  
@@ -95,44 +95,44 @@
     95                                          
     96                                  
     97 000000A1 E85100                  move_up:        call main_unhighlight
-    98 000000A4 A0[2309]                                mov al,[current_row]
+    98 000000A4 A0[2509]                                mov al,[current_row]
     99 000000A7 3C02                                    cmp al,2
    100 000000A9 7408                                    je first_row
    101 000000AB FEC8                                    dec al
-   102 000000AD A2[2309]                                mov [current_row],al
+   102 000000AD A2[2509]                                mov [current_row],al
    103 000000B0 E92200                                  jmp main_highlight
    104                                  
    105 000000B3 B015                    first_row:      mov al,21
-   106 000000B5 A2[2309]                                mov [current_row],al
+   106 000000B5 A2[2509]                                mov [current_row],al
    107 000000B8 E91A00                                  jmp main_highlight
    108                                  
    109                                  
    110 000000BB E83700                  move_down:      call main_unhighlight
-   111 000000BE A0[2309]                                mov al,[current_row]
+   111 000000BE A0[2509]                                mov al,[current_row]
    112 000000C1 3C15                                    cmp al,21       ;last row that can be accessed
    113 000000C3 7408                                    je last_row
    114 000000C5 FEC0                                    inc al
-   115 000000C7 A2[2309]                                mov [current_row],AL
+   115 000000C7 A2[2509]                                mov [current_row],AL
    116 000000CA E90800                                  jmp main_highlight
    117                                                  
    118 000000CD B002                    last_row:       mov al,2 ; first accessible row
-   119 000000CF A2[2309]                                mov [current_row],al
+   119 000000CF A2[2509]                                mov [current_row],al
    120 000000D2 E90000                                  jmp main_highlight
    121                                  
    122                                  
    123                                  
    124 000000D5 31C0                    main_highlight: xor ax,ax
-   125 000000D7 A0[2209]                                mov al,[active_pane]
+   125 000000D7 A0[2409]                                mov al,[active_pane]
    126 000000DA 50                                      push ax
-   127 000000DB A0[2309]                                mov al,[current_row]
+   127 000000DB A0[2509]                                mov al,[current_row]
    128 000000DE 50                                      push ax
-   129 000000DF A0[2409]                                mov al,[l_start_cols]
+   129 000000DF A0[2609]                                mov al,[l_start_cols]
    130 000000E2 50                                      push ax
-   131 000000E3 A0[2509]                                mov al,[l_end_cols]
+   131 000000E3 A0[2709]                                mov al,[l_end_cols]
    132 000000E6 50                                      push ax
-   133 000000E7 A0[2609]                                mov al,[r_start_cols]
+   133 000000E7 A0[2809]                                mov al,[r_start_cols]
    134 000000EA 50                                      push ax
-   135 000000EB A0[2709]                                mov al,[r_end_cols]
+   135 000000EB A0[2909]                                mov al,[r_end_cols]
    136 000000EE 50                                      push ax
    137 000000EF E82105                                  call highlight_row
    138 000000F2 E94FFF                                  jmp main_loop
@@ -141,17 +141,17 @@
    141                                  
    142 000000F5 50                      main_unhighlight:       push ax
    143 000000F6 31C0                                            xor ax,ax
-   144 000000F8 A0[2209]                                        mov al,[active_pane]
+   144 000000F8 A0[2409]                                        mov al,[active_pane]
    145 000000FB 50                                              push ax
-   146 000000FC A0[2309]                                        mov al,[current_row]
+   146 000000FC A0[2509]                                        mov al,[current_row]
    147 000000FF 50                                              push ax
-   148 00000100 A0[2409]                                        mov al,[l_start_cols]
+   148 00000100 A0[2609]                                        mov al,[l_start_cols]
    149 00000103 50                                              push ax
-   150 00000104 A0[2509]                                        mov al,[l_end_cols]
+   150 00000104 A0[2709]                                        mov al,[l_end_cols]
    151 00000107 50                                              push ax
-   152 00000108 A0[2609]                                        mov al,[r_start_cols]
+   152 00000108 A0[2809]                                        mov al,[r_start_cols]
    153 0000010B 50                                              push ax
-   154 0000010C A0[2709]                                        mov al,[r_end_cols]
+   154 0000010C A0[2909]                                        mov al,[r_end_cols]
    155 0000010F 50                                              push ax
    156 00000110 E87605                                          call unhighlight_row
    157 00000113 58                                              pop ax
@@ -176,12 +176,12 @@
    176 0000011F 57                  <1>                     push di
    177                              <1> 
    178 00000120 B41A                <1>                     mov ah, 1Ah             ; "Hello DOS, I want to use extension 1Ah (Set DTA)"
-   179 00000122 BA[2C09]            <1>                     mov dx, dta_buffer      ; "Here is the memory address of my 43-byte mailbox"
+   179 00000122 BA[2E09]            <1>                     mov dx, dta_buffer      ; "Here is the memory address of my 43-byte mailbox"
    180 00000125 CD21                <1>                     int 21h                 ; CALL DOS! DOS registers the address and returns instantly.
    181                              <1> 
    182 00000127 B44E                <1>                     mov ah, 4Eh             ; "Hello DOS, extension 4Eh (Find First File) please"
    183 00000129 B91000              <1>                     mov cx, 10h             ; "I am looking for Normal Files AND Directories (10h)"
-   184 0000012C BA[2809]            <1>                     mov dx, search_string   ; "Here is my search query: *.*"
+   184 0000012C BA[2A09]            <1>                     mov dx, search_string   ; "Here is my search query: *.*"
    185 0000012F CD21                <1>                     int 21h                 ; CALL DOS! (DOS spins the hard drive and fills the DTA)
    186                              <1> 
    187                              <1>                     ; SAFETY CHECK
@@ -190,35 +190,35 @@
    190                              <1> 
    191 00000133 31F6                <1>                     xor si,si
    192 00000135 31FF                <1>                     xor di,di
-   193 00000137 803E[2209]00        <1>                     cmp byte [active_pane],0
+   193 00000137 803E[2409]00        <1>                     cmp byte [active_pane],0
    194 0000013C 7508                <1>                     jne second_pane
    195                              <1> 
-   196 0000013E BF[5709]            <1>                     mov di,left_file_list
+   196 0000013E BF[5909]            <1>                     mov di,left_file_list
    197 00000141 31DB                <1>                     xor bx,bx
    198 00000143 E90800              <1>                     jmp copy_loop
    199                              <1> 
    200                              <1> 
-   201 00000146 BF[D80B]            <1> second_pane:    mov di,right_file_list
+   201 00000146 BF[DA0B]            <1> second_pane:    mov di,right_file_list
    202 00000149 31DB                <1>                 xor bx,bx
    203 0000014B E90000              <1>                 jmp copy_loop
    204                              <1> 
    205                              <1> 
-   206 0000014E A0[4109]            <1> copy_loop:  mov al,[dta_buffer+21]  ;attribute
+   206 0000014E A0[4309]            <1> copy_loop:  mov al,[dta_buffer+21]  ;attribute
    207 00000151 88450D              <1>             mov [di+13],al
    208                              <1> 
-   209 00000154 A1[4209]            <1>             mov ax,[dta_buffer+22]
+   209 00000154 A1[4409]            <1>             mov ax,[dta_buffer+22]
    210 00000157 894514              <1>             mov [di+20],ax
    211                              <1> 
-   212 0000015A A1[4409]            <1>             mov ax,[dta_buffer+24]
+   212 0000015A A1[4609]            <1>             mov ax,[dta_buffer+24]
    213 0000015D 894512              <1>             mov [di+18],ax
    214                              <1> 
-   215 00000160 A1[4609]            <1>             mov ax,[dta_buffer+26]
+   215 00000160 A1[4809]            <1>             mov ax,[dta_buffer+26]
    216 00000163 89450E              <1>             mov [di+14],ax
    217                              <1> 
-   218 00000166 A1[4809]            <1>             mov ax,[dta_buffer+28]
+   218 00000166 A1[4A09]            <1>             mov ax,[dta_buffer+28]
    219 00000169 894510              <1>             mov [di+16],ax
    220                              <1> 
-   221 0000016C BE[4A09]            <1>             mov si,dta_buffer+30
+   221 0000016C BE[4C09]            <1>             mov si,dta_buffer+30
    222 0000016F B90D00              <1>             mov cx,13
    223 00000172 57                  <1>             push di
    224 00000173 E90000              <1>             jmp name_loop
@@ -267,15 +267,15 @@
    267 000001A7 31C0                <1>                     xor ax,ax
    268 000001A9 31DB                <1>                     xor bx,bx
    269                              <1>                     
-   270 000001AB A1[2309]            <1>                     mov ax,[current_row]
+   270 000001AB A1[2509]            <1>                     mov ax,[current_row]
    271 000001AE 2D0200              <1>                     sub ax,2
    272 000001B1 B320                <1>                     mov bl,32
    273 000001B3 F6E3                <1>                     mul bl
    274 000001B5 89C3                <1>                     mov bx,ax
    275                              <1> 
-   276 000001B7 803E[2209]00        <1>                     cmp byte [active_pane],0
+   276 000001B7 803E[2409]00        <1>                     cmp byte [active_pane],0
    277 000001BC 752A                <1>                     jne second_pane_dir
-   278 000001BE BE[5709]            <1>                     mov si,left_file_list
+   278 000001BE BE[5909]            <1>                     mov si,left_file_list
    279                              <1> 
    280                              <1> 
    281                              <1> @here_second_pane_dir:
@@ -305,7 +305,7 @@
    305 000001E4 58                  <1>                     pop ax
    306 000001E5 E95CFE              <1>                     jmp main_loop
    307                              <1> 
-   308 000001E8 BE[D80B]            <1> second_pane_dir:    mov si,right_file_list
+   308 000001E8 BE[DA0B]            <1> second_pane_dir:    mov si,right_file_list
    309 000001EB EBD4                <1>                     jmp @here_second_pane_dir
    310                              <1> 
    311 000001ED 5E                  <1> return_enterdir:    pop si
@@ -327,131 +327,131 @@
    327 000001FB E83C03              <1>                 call boundry
    328                              <1> 
    329                              <1> 
-   330 000001FE B8[F308]            <1>                 mov ax,Mystr1
+   330 000001FE B8[F508]            <1>                 mov ax,Mystr1
    331 00000201 50                  <1>                 push ax
-   332 00000202 A1[F808]            <1>                 mov ax,[attribute]
+   332 00000202 A1[FA08]            <1>                 mov ax,[attribute]
    333 00000205 50                  <1>                 push ax
-   334 00000206 A1[F908]            <1>                 mov ax,[row1]
+   334 00000206 A1[FB08]            <1>                 mov ax,[row1]
    335 00000209 50                  <1>                 push ax
-   336 0000020A A1[FA08]            <1>                 mov ax,[cols1]
+   336 0000020A A1[FC08]            <1>                 mov ax,[cols1]
    337 0000020D 50                  <1>                 push ax
    338 0000020E E80A01              <1>                 call print  
    339                              <1> 
    340                              <1> 
-   341 00000211 B8[FB08]            <1>                 mov ax,Mystr2
+   341 00000211 B8[FD08]            <1>                 mov ax,Mystr2
    342 00000214 50                  <1>                 push ax
-   343 00000215 A1[F808]            <1>                 mov ax,[attribute]
+   343 00000215 A1[FA08]            <1>                 mov ax,[attribute]
    344 00000218 50                  <1>                 push ax
-   345 00000219 A1[0009]            <1>                 mov ax,[row2]
+   345 00000219 A1[0209]            <1>                 mov ax,[row2]
    346 0000021C 50                  <1>                 push ax
-   347 0000021D A1[0109]            <1>                 mov ax,[cols2]
+   347 0000021D A1[0309]            <1>                 mov ax,[cols2]
    348 00000220 50                  <1>                 push ax
    349 00000221 E8F700              <1>                 call print
    350                              <1> 
    351                              <1> 
-   352 00000224 B8[0209]            <1>                 mov ax,Mystr3
+   352 00000224 B8[0409]            <1>                 mov ax,Mystr3
    353 00000227 50                  <1>                 push ax
-   354 00000228 A1[F808]            <1>                 mov ax,[attribute]
+   354 00000228 A1[FA08]            <1>                 mov ax,[attribute]
    355 0000022B 50                  <1>                 push ax
-   356 0000022C A1[0709]            <1>                 mov ax,[row3]
+   356 0000022C A1[0909]            <1>                 mov ax,[row3]
    357 0000022F 50                  <1>                 push ax
-   358 00000230 A1[0809]            <1>                 mov ax,[cols3]
+   358 00000230 A1[0A09]            <1>                 mov ax,[cols3]
    359 00000233 50                  <1>                 push ax
    360 00000234 E8E400              <1>                 call print
    361                              <1> 
-   362 00000237 B8[F308]            <1>                 mov ax,Mystr1
+   362 00000237 B8[F508]            <1>                 mov ax,Mystr1
    363 0000023A 50                  <1>                 push ax
-   364 0000023B A1[F808]            <1>                 mov ax,[attribute]
+   364 0000023B A1[FA08]            <1>                 mov ax,[attribute]
    365 0000023E 50                  <1>                 push ax
-   366 0000023F A1[0909]            <1>                 mov ax,[row4]
+   366 0000023F A1[0B09]            <1>                 mov ax,[row4]
    367 00000242 50                  <1>                 push ax
-   368 00000243 A1[0A09]            <1>                 mov ax,[cols4]
+   368 00000243 A1[0C09]            <1>                 mov ax,[cols4]
    369 00000246 50                  <1>                 push ax
    370 00000247 E8D100              <1>                 call print
    371                              <1> 
-   372 0000024A B8[FB08]            <1>                 mov ax,Mystr2
+   372 0000024A B8[FD08]            <1>                 mov ax,Mystr2
    373 0000024D 50                  <1>                 push ax
-   374 0000024E A1[F808]            <1>                 mov ax,[attribute]
+   374 0000024E A1[FA08]            <1>                 mov ax,[attribute]
    375 00000251 50                  <1>                 push ax
-   376 00000252 A1[0B09]            <1>                 mov ax,[row5]
+   376 00000252 A1[0D09]            <1>                 mov ax,[row5]
    377 00000255 50                  <1>                 push ax
-   378 00000256 A1[0C09]            <1>                 mov ax,[cols5]
+   378 00000256 A1[0E09]            <1>                 mov ax,[cols5]
    379 00000259 50                  <1>                 push ax
    380 0000025A E8BE00              <1>                 call print
    381                              <1> 
-   382 0000025D B8[0209]            <1>                 mov ax,Mystr3
+   382 0000025D B8[0409]            <1>                 mov ax,Mystr3
    383 00000260 50                  <1>                 push ax
-   384 00000261 A1[F808]            <1>                 mov ax,[attribute]
+   384 00000261 A1[FA08]            <1>                 mov ax,[attribute]
    385 00000264 50                  <1>                 push ax
-   386 00000265 A1[0D09]            <1>                 mov ax,[row6]
+   386 00000265 A1[0F09]            <1>                 mov ax,[row6]
    387 00000268 50                  <1>                 push ax
-   388 00000269 A1[0E09]            <1>                 mov ax,[cols6]
+   388 00000269 A1[1009]            <1>                 mov ax,[cols6]
    389 0000026C 50                  <1>                 push ax
    390 0000026D E8AB00              <1>                 call print
    391                              <1> 
    392                              <1> 
    393                              <1> 
    394                              <1> 
-   395 00000270 A1[0F09]            <1>                 mov ax,[Mychar]
+   395 00000270 A1[1109]            <1>                 mov ax,[Mychar]
    396 00000273 50                  <1>                 push ax
-   397 00000274 A1[1009]            <1>                 mov ax,[attr]
+   397 00000274 A1[1209]            <1>                 mov ax,[attr]
    398 00000277 50                  <1>                 push ax
-   399 00000278 A1[1109]            <1>                 mov ax,[v_row1]
+   399 00000278 A1[1309]            <1>                 mov ax,[v_row1]
    400 0000027B 50                  <1>                 push ax
-   401 0000027C A1[1209]            <1>                 mov ax,[v_cols1]
+   401 0000027C A1[1409]            <1>                 mov ax,[v_cols1]
    402 0000027F 50                  <1>                 push ax
-   403 00000280 A1[1309]            <1>                 mov ax,[dest_row1]
+   403 00000280 A1[1509]            <1>                 mov ax,[dest_row1]
    404 00000283 50                  <1>                 push ax
    405 00000284 E80601              <1>                 call print_verticle
    406                              <1> 
-   407 00000287 A1[0F09]            <1>                 mov ax,[Mychar]
+   407 00000287 A1[1109]            <1>                 mov ax,[Mychar]
    408 0000028A 50                  <1>                 push ax
-   409 0000028B A1[1009]            <1>                 mov ax,[attr]
+   409 0000028B A1[1209]            <1>                 mov ax,[attr]
    410 0000028E 50                  <1>                 push ax
-   411 0000028F A1[1409]            <1>                 mov ax,[v_row2]
+   411 0000028F A1[1609]            <1>                 mov ax,[v_row2]
    412 00000292 50                  <1>                 push ax
-   413 00000293 A1[1509]            <1>                 mov ax,[v_cols2]
+   413 00000293 A1[1709]            <1>                 mov ax,[v_cols2]
    414 00000296 50                  <1>                 push ax
-   415 00000297 A1[1609]            <1>                 mov ax,[dest_row2]
+   415 00000297 A1[1809]            <1>                 mov ax,[dest_row2]
    416 0000029A 50                  <1>                 push ax
    417 0000029B E8EF00              <1>                 call print_verticle
    418                              <1> 
    419                              <1> 
-   420 0000029E A1[0F09]            <1>                 mov ax,[Mychar]
+   420 0000029E A1[1109]            <1>                 mov ax,[Mychar]
    421 000002A1 50                  <1>                 push ax
-   422 000002A2 A1[1009]            <1>                 mov ax,[attr]
+   422 000002A2 A1[1209]            <1>                 mov ax,[attr]
    423 000002A5 50                  <1>                 push ax
-   424 000002A6 A1[1709]            <1>                 mov ax,[v_row3]
+   424 000002A6 A1[1909]            <1>                 mov ax,[v_row3]
    425 000002A9 50                  <1>                 push ax
-   426 000002AA A1[1809]            <1>                 mov ax,[v_cols3]
+   426 000002AA A1[1A09]            <1>                 mov ax,[v_cols3]
    427 000002AD 50                  <1>                 push ax
-   428 000002AE A1[1909]            <1>                 mov ax,[dest_row3]
+   428 000002AE A1[1B09]            <1>                 mov ax,[dest_row3]
    429 000002B1 50                  <1>                 push ax
    430 000002B2 E8D800              <1>                 call print_verticle
    431                              <1> 
    432                              <1> 
-   433 000002B5 A1[0F09]            <1>                 mov ax,[Mychar]
+   433 000002B5 A1[1109]            <1>                 mov ax,[Mychar]
    434 000002B8 50                  <1>                 push ax
-   435 000002B9 A1[1009]            <1>                 mov ax,[attr]
+   435 000002B9 A1[1209]            <1>                 mov ax,[attr]
    436 000002BC 50                  <1>                 push ax
-   437 000002BD A1[1A09]            <1>                 mov ax,[v_row4]
+   437 000002BD A1[1C09]            <1>                 mov ax,[v_row4]
    438 000002C0 50                  <1>                 push ax
-   439 000002C1 A1[1B09]            <1>                 mov ax,[v_cols4]
+   439 000002C1 A1[1D09]            <1>                 mov ax,[v_cols4]
    440 000002C4 50                  <1>                 push ax
-   441 000002C5 A1[1C09]            <1>                 mov ax,[dest_row4]
+   441 000002C5 A1[1E09]            <1>                 mov ax,[dest_row4]
    442 000002C8 50                  <1>                 push ax
    443 000002C9 E8C100              <1>                 call print_verticle
    444                              <1> 
    445                              <1> 
-   446 000002CC A1[1D09]            <1>                 mov ax,[h_Mychar]
+   446 000002CC A1[1F09]            <1>                 mov ax,[h_Mychar]
    447 000002CF 50                  <1>                 push ax
-   448 000002D0 A1[1E09]            <1>                 mov ax,[h_attr]
+   448 000002D0 A1[2009]            <1>                 mov ax,[h_attr]
    449 000002D3 50                  <1>                 push ax
-   450 000002D4 A1[1F09]            <1>                 mov ax,[h_row]
+   450 000002D4 A1[2109]            <1>                 mov ax,[h_row]
    451 000002D7 50                  <1>                 push ax
-   452 000002D8 A1[2009]            <1>                 mov ax,[h_cols]
+   452 000002D8 A1[2209]            <1>                 mov ax,[h_cols]
    453 000002DB 50                  <1>                 push ax
-   454 000002DC A1[2109]            <1>                 mov ax,[dest_col]
+   454 000002DC A1[2309]            <1>                 mov ax,[dest_col]
    455 000002DF 50                  <1>                 push ax
    456 000002E0 E8FD00              <1>                 call print_horizontal
    457                              <1> 
@@ -1052,10 +1052,10 @@
   1052 0000071A 8B4606              <1>                 mov ax,[bp+6]      ; explicit pane index (0 = left, 1 = right)
   1053 0000071D 3D0000              <1>                 cmp ax,0
   1054 00000720 7506                <1>                 jne second_pane_ext
-  1055 00000722 BE[5709]            <1>                 mov si,left_file_list
+  1055 00000722 BE[5909]            <1>                 mov si,left_file_list
   1056 00000725 E90600              <1>                 jmp extract_loop    ; name is 13 bytes
   1057                              <1> 
-  1058 00000728 BE[D80B]            <1> second_pane_ext:    mov si,right_file_list
+  1058 00000728 BE[DA0B]            <1> second_pane_ext:    mov si,right_file_list
   1059 0000072B E90000              <1>                     jmp extract_loop
   1060                              <1> 
   1061 0000072E 8A04                <1> extract_loop:   mov al,[si]
@@ -1250,199 +1250,200 @@
   1250 0000088C B43D                <1>             mov ah,3Dh
   1251 0000088E B000                <1>             mov al,0
   1252 00000890 CD21                <1>             int 21h
-  1253 00000892 724F                <1>             jc file_error
-  1254 00000894 A3[DB0E]            <1>             mov [file_handle],ax
+  1253 00000892 7251                <1>             jc file_error
+  1254 00000894 A3[DD0E]            <1>             mov [file_handle],ax
   1255                              <1> 
   1256                              <1> 
   1257                              <1> reading_loop:
   1258                              <1>             ;read file
   1259 00000897 B43F                <1>             mov ah,3Fh
-  1260 00000899 8B1E[DB0E]          <1>             mov bx,[file_handle]
+  1260 00000899 8B1E[DD0E]          <1>             mov bx,[file_handle]
   1261 0000089D B9D007              <1>             mov cx,2000     ;asks for how much to draw on screen
-  1262 000008A0 BA[DD0E]            <1>             mov dx,file_buffer
+  1262 000008A0 BA[DF0E]            <1>             mov dx,file_buffer
   1263 000008A3 CD21                <1>             int 21h
   1264                              <1>             
   1265                              <1>             ; Add null-terminator so print stops at the correct length
   1266 000008A5 89C3                <1>             mov bx, ax
-  1267 000008A7 C687[DD0E]00        <1>             mov byte [file_buffer + bx], 0
+  1267 000008A7 C687[DF0E]00        <1>             mov byte [file_buffer + bx], 0
   1268                              <1> 
   1269 000008AC 89C3                <1>             mov bx, ax      ; SAVE AX before we ruin it
   1270                              <1> 
-  1271 000008AE B8[DD0E]            <1>             mov ax,file_buffer
-  1272 000008B1 50                  <1>             push ax
-  1273 000008B2 A1[F808]            <1>             mov ax,[attribute]
-  1274 000008B5 50                  <1>             push ax
-  1275 000008B6 B80000              <1>             mov ax,0
-  1276 000008B9 50                  <1>             push ax
-  1277 000008BA B80000              <1>             mov ax,0
-  1278 000008BD 50                  <1>             push ax
-  1279 000008BE E85AFA              <1>             call print
-  1280                              <1> 
-  1281 000008C1 81FB0000            <1>             cmp bx,0        ; CHECK BX instead of AX
-  1282 000008C5 7F0F                <1>             jg next_page
-  1283                              <1> 
-  1284 000008C7 B400                <1>             mov ah,00h
-  1285 000008C9 CD16                <1>             int 16h
-  1286                              <1> 
+  1271 000008AE 81FB0000            <1>             cmp bx, 0
+  1272 000008B2 7424                <1>             je next_page
+  1273                              <1> 
+  1274 000008B4 E85BFC              <1>             call blue_background
+  1275                              <1> 
+  1276 000008B7 B8[DF0E]            <1>             mov ax,file_buffer
+  1277 000008BA 50                  <1>             push ax
+  1278 000008BB A1[FA08]            <1>             mov ax,[attribute]
+  1279 000008BE 50                  <1>             push ax
+  1280 000008BF B80000              <1>             mov ax,0
+  1281 000008C2 50                  <1>             push ax
+  1282 000008C3 B80000              <1>             mov ax,0
+  1283 000008C6 50                  <1>             push ax
+  1284 000008C7 E851FA              <1>             call print
+  1285                              <1> 
+  1286 000008CA E90B00              <1>             jmp next_page
   1287                              <1> 
   1288                              <1> 
-  1289                              <1>             ;close file
-  1290 000008CB B43E                <1> close_file: mov ah,3Eh
-  1291 000008CD 8B1E[DB0E]          <1>             mov bx,[file_handle]     
-  1292 000008D1 CD21                <1>             int 21h    ; YOU FORGOT TO CALL DOS!
-  1293 000008D3 E91500              <1>             jmp ret_view_file
-  1294                              <1>             
-  1295                              <1> 
-  1296 000008D6 B400                <1> next_page:  mov ah,00h
-  1297 000008D8 CD16                <1>             int 16h
-  1298                              <1> 
-  1299 000008DA 3C1B                <1>             cmp al,1Bh        
-  1300 000008DC 74ED                <1>             je close_file
-  1301                              <1> 
-  1302 000008DE 80FC50              <1>             cmp ah,50h      ; 50h is the DOWN arrow key
-  1303 000008E1 74B4                <1>             je reading_loop
-  1304                              <1> 
+  1289                              <1> 
+  1290                              <1>             ;close file
+  1291 000008CD B43E                <1> close_file: mov ah,3Eh
+  1292 000008CF 8B1E[DD0E]          <1>             mov bx,[file_handle]     
+  1293 000008D3 CD21                <1>             int 21h    ; YOU FORGOT TO CALL DOS!
+  1294 000008D5 E91500              <1>             jmp ret_view_file
+  1295                              <1>             
+  1296                              <1> 
+  1297 000008D8 B400                <1> next_page:  mov ah,00h
+  1298 000008DA CD16                <1>             int 16h
+  1299                              <1> 
+  1300 000008DC 3C1B                <1>             cmp al,1Bh        
+  1301 000008DE 74ED                <1>             je close_file
+  1302                              <1> 
+  1303 000008E0 80FC50              <1>             cmp ah,50h      ; 50h is the DOWN arrow key
+  1304 000008E3 74B2                <1>             je reading_loop
   1305                              <1> 
-  1306 000008E3 5E                  <1> file_error: pop si
-  1307 000008E4 5A                  <1>             pop dx
-  1308 000008E5 59                  <1>             pop cx
-  1309 000008E6 5B                  <1>             pop bx
-  1310 000008E7 58                  <1>             pop ax
-  1311 000008E8 E959F7              <1>             jmp main_loop
-  1312                              <1> 
-  1313 000008EB 5E                  <1> ret_view_file:  pop si
-  1314 000008EC 5A                  <1>                 pop dx
-  1315 000008ED 59                  <1>                 pop cx
-  1316 000008EE 5B                  <1>                 pop bx
-  1317 000008EF 58                  <1>                 pop ax
-  1318 000008F0 E932F7              <1>                 jmp refresh_screens
-  1319                              <1>                 ; these are all from enter_directory
-  1320                                  %include "data.asm"
-  1321                              <1> 
-  1322 000008F3 4E616D6500          <1> Mystr1: db "Name",0
-  1323 000008F8 1E                  <1> attribute: db 0x1E
-  1324 000008F9 01                  <1> row1:  db 1
-  1325 000008FA 08                  <1> cols1: db 8
-  1326                              <1> 
+  1306                              <1> 
+  1307 000008E5 5E                  <1> file_error: pop si
+  1308 000008E6 5A                  <1>             pop dx
+  1309 000008E7 59                  <1>             pop cx
+  1310 000008E8 5B                  <1>             pop bx
+  1311 000008E9 58                  <1>             pop ax
+  1312 000008EA E957F7              <1>             jmp main_loop
+  1313                              <1> 
+  1314 000008ED 5E                  <1> ret_view_file:  pop si
+  1315 000008EE 5A                  <1>                 pop dx
+  1316 000008EF 59                  <1>                 pop cx
+  1317 000008F0 5B                  <1>                 pop bx
+  1318 000008F1 58                  <1>                 pop ax
+  1319 000008F2 E930F7              <1>                 jmp refresh_screens
+  1320                              <1>                 ; these are all from enter_directory
+  1321                                  %include "data.asm"
+  1322                              <1> 
+  1323 000008F5 4E616D6500          <1> Mystr1: db "Name",0
+  1324 000008FA 1E                  <1> attribute: db 0x1E
+  1325 000008FB 01                  <1> row1:  db 1
+  1326 000008FC 08                  <1> cols1: db 8
   1327                              <1> 
-  1328 000008FB 53697A6500          <1> Mystr2: db "Size",0
-  1329 00000900 01                  <1> row2:  db 1
-  1330 00000901 18                  <1> cols2: db 24 
-  1331                              <1> 
+  1328                              <1> 
+  1329 000008FD 53697A6500          <1> Mystr2: db "Size",0
+  1330 00000902 01                  <1> row2:  db 1
+  1331 00000903 18                  <1> cols2: db 24 
   1332                              <1> 
-  1333 00000902 4461746500          <1> Mystr3: db "Date",0
-  1334 00000907 01                  <1> row3:  db 1
-  1335 00000908 21                  <1> cols3: db 33
-  1336                              <1> 
-  1337 00000909 01                  <1> row4: db 1  
-  1338 0000090A 30                  <1> cols4: db 48
-  1339                              <1> 
-  1340 0000090B 01                  <1> row5: db 1
-  1341 0000090C 40                  <1> cols5: db 64
-  1342                              <1> 
-  1343 0000090D 01                  <1> row6: db 1
-  1344 0000090E 49                  <1> cols6: db 73
-  1345                              <1> 
+  1333                              <1> 
+  1334 00000904 4461746500          <1> Mystr3: db "Date",0
+  1335 00000909 01                  <1> row3:  db 1
+  1336 0000090A 21                  <1> cols3: db 33
+  1337                              <1> 
+  1338 0000090B 01                  <1> row4: db 1  
+  1339 0000090C 30                  <1> cols4: db 48
+  1340                              <1> 
+  1341 0000090D 01                  <1> row5: db 1
+  1342 0000090E 40                  <1> cols5: db 64
+  1343                              <1> 
+  1344 0000090F 01                  <1> row6: db 1
+  1345 00000910 49                  <1> cols6: db 73
   1346                              <1> 
-  1347 0000090F B3                  <1> Mychar: db 0xB3
-  1348 00000910 1B                  <1> attr: db 0x1B
-  1349                              <1> 
-  1350 00000911 01                  <1> v_row1: db 1
-  1351 00000912 1E                  <1> v_cols1: db 30
-  1352 00000913 16                  <1> dest_row1: db 22
-  1353                              <1> 
+  1347                              <1> 
+  1348 00000911 B3                  <1> Mychar: db 0xB3
+  1349 00000912 1B                  <1> attr: db 0x1B
+  1350                              <1> 
+  1351 00000913 01                  <1> v_row1: db 1
+  1352 00000914 1E                  <1> v_cols1: db 30
+  1353 00000915 16                  <1> dest_row1: db 22
   1354                              <1> 
-  1355 00000914 01                  <1> v_row2: db 1
-  1356 00000915 14                  <1> v_cols2: db 20
-  1357 00000916 16                  <1> dest_row2: db 22
-  1358                              <1> 
+  1355                              <1> 
+  1356 00000916 01                  <1> v_row2: db 1
+  1357 00000917 14                  <1> v_cols2: db 20
+  1358 00000918 16                  <1> dest_row2: db 22
   1359                              <1> 
-  1360 00000917 01                  <1> v_row3: db 1
-  1361 00000918 46                  <1> v_cols3: db 70
-  1362 00000919 16                  <1> dest_row3: db 22
-  1363                              <1> 
-  1364 0000091A 01                  <1> v_row4: db 1
-  1365 0000091B 3C                  <1> v_cols4: db 60
-  1366 0000091C 16                  <1> dest_row4: db 22
-  1367                              <1> 
+  1360                              <1> 
+  1361 00000919 01                  <1> v_row3: db 1
+  1362 0000091A 46                  <1> v_cols3: db 70
+  1363 0000091B 16                  <1> dest_row3: db 22
+  1364                              <1> 
+  1365 0000091C 01                  <1> v_row4: db 1
+  1366 0000091D 3C                  <1> v_cols4: db 60
+  1367 0000091E 16                  <1> dest_row4: db 22
   1368                              <1> 
   1369                              <1> 
   1370                              <1> 
-  1371 0000091D C4                  <1> h_Mychar: db 0xC4
-  1372 0000091E 1B                  <1> h_attr: db 0x1B
-  1373 0000091F 16                  <1> h_row: db 22
-  1374 00000920 01                  <1> h_cols: db 1
-  1375 00000921 4E                  <1> dest_col: db 78
-  1376                              <1> 
+  1371                              <1> 
+  1372 0000091F C4                  <1> h_Mychar: db 0xC4
+  1373 00000920 1B                  <1> h_attr: db 0x1B
+  1374 00000921 16                  <1> h_row: db 22
+  1375 00000922 01                  <1> h_cols: db 1
+  1376 00000923 4E                  <1> dest_col: db 78
   1377                              <1> 
-  1378                              <1> ;===============================================================================================================
-  1379                              <1> 
-  1380 00000922 00                  <1> active_pane: db 0
-  1381 00000923 02                  <1> current_row: db 2
-  1382 00000924 01                  <1> l_start_cols: db 1
-  1383 00000925 26                  <1> l_end_cols: db 38
-  1384 00000926 29                  <1> r_start_cols: db 41
-  1385 00000927 4E                  <1> r_end_cols: db 78
-  1386                              <1> 
+  1378                              <1> 
+  1379                              <1> ;===============================================================================================================
+  1380                              <1> 
+  1381 00000924 00                  <1> active_pane: db 0
+  1382 00000925 02                  <1> current_row: db 2
+  1383 00000926 01                  <1> l_start_cols: db 1
+  1384 00000927 26                  <1> l_end_cols: db 38
+  1385 00000928 29                  <1> r_start_cols: db 41
+  1386 00000929 4E                  <1> r_end_cols: db 78
   1387                              <1> 
-  1388                              <1> ;===============================================================================================================
-  1389                              <1> 
+  1388                              <1> 
+  1389                              <1> ;===============================================================================================================
   1390                              <1> 
   1391                              <1> 
-  1392                              <1> ; -------------------------------------------------------------------
-  1393                              <1> ; 32-BYTE MOCK FILE SYSTEM DATA
-  1394                              <1> ; [0-12]  : Filename string (13 bytes max, null terminated)
-  1395                              <1> ; [13]    : Attribute (00h = Normal File, 10h = Directory)
-  1396                              <1> ; [14-17] : File Size (DWORD - 4 bytes)
-  1397                              <1> ; [18-19] : MS-DOS Date Word (Bits: YYYYYYY MMMMDDDDD)
-  1398                              <1> ; [20-21] : MS-DOS Time Word (Bits: HHHHHMMMMMMSSSSS)
-  1399                              <1> ; [22-31] : Reserved Padding (10 bytes)
-  1400                              <1> ; -------------------------------------------------------------------
-  1401                              <1> 
+  1392                              <1> 
+  1393                              <1> ; -------------------------------------------------------------------
+  1394                              <1> ; 32-BYTE MOCK FILE SYSTEM DATA
+  1395                              <1> ; [0-12]  : Filename string (13 bytes max, null terminated)
+  1396                              <1> ; [13]    : Attribute (00h = Normal File, 10h = Directory)
+  1397                              <1> ; [14-17] : File Size (DWORD - 4 bytes)
+  1398                              <1> ; [18-19] : MS-DOS Date Word (Bits: YYYYYYY MMMMDDDDD)
+  1399                              <1> ; [20-21] : MS-DOS Time Word (Bits: HHHHHMMMMMMSSSSS)
+  1400                              <1> ; [22-31] : Reserved Padding (10 bytes)
+  1401                              <1> ; -------------------------------------------------------------------
   1402                              <1> 
-  1403 00000928 2A2E2A00            <1> search_string db "*.*",0
-  1404 0000092C 00<rept>            <1> dta_buffer  times 43 db 0
-  1405                              <1> left_file_list:
-  1406                              <1> 
-  1407 00000957 00<rept>            <1>     times 640 db 0
-  1408                              <1>     ; --- END OF ARRAY MARKER ---
-  1409 00000BD7 FF                  <1>     db 0FFh                      ; End Marker
-  1410                              <1> right_file_list:
-  1411                              <1> 
-  1412 00000BD8 00<rept>            <1>     times 640 db 0
-  1413                              <1>     ; --- END OF ARRAY MARKER ---
-  1414 00000E58 FF                  <1>     db 0FFh                      ; End Marker
-  1415                              <1> 
+  1403                              <1> 
+  1404 0000092A 2A2E2A00            <1> search_string db "*.*",0
+  1405 0000092E 00<rept>            <1> dta_buffer  times 43 db 0
+  1406                              <1> left_file_list:
+  1407                              <1> 
+  1408 00000959 00<rept>            <1>     times 640 db 0
+  1409                              <1>     ; --- END OF ARRAY MARKER ---
+  1410 00000BD9 FF                  <1>     db 0FFh                      ; End Marker
+  1411                              <1> right_file_list:
+  1412                              <1> 
+  1413 00000BDA 00<rept>            <1>     times 640 db 0
+  1414                              <1>     ; --- END OF ARRAY MARKER ---
+  1415 00000E5A FF                  <1>     db 0FFh                      ; End Marker
   1416                              <1> 
-  1417                              <1> ;Bytes 0 to 20 (21 bytes): Secret DOS search data. Ignore this completely.
-  1418                              <1> 
-  1419                              <1> ;Byte 21 (1 byte): The File Attribute (e.g., 10h means Directory, 00h means Normal File).
-  1420                              <1> 
-  1421                              <1> ;Bytes 22 to 23 (2 bytes): The File Time.
-  1422                              <1> 
-  1423                              <1> ;Bytes 24 to 25 (2 bytes): The File Date.
-  1424                              <1> 
-  1425                              <1> ;Bytes 26 to 29 (4 bytes): The File Size. (The lower 16-bits are at Byte 26, the upper 16-bits are at Byte 28).
-  1426                              <1> 
-  1427                              <1> ;Bytes 30 to 42 (13 bytes): The File Name as a null-terminated string.
-  1428                              <1> 
+  1417                              <1> 
+  1418                              <1> ;Bytes 0 to 20 (21 bytes): Secret DOS search data. Ignore this completely.
+  1419                              <1> 
+  1420                              <1> ;Byte 21 (1 byte): The File Attribute (e.g., 10h means Directory, 00h means Normal File).
+  1421                              <1> 
+  1422                              <1> ;Bytes 22 to 23 (2 bytes): The File Time.
+  1423                              <1> 
+  1424                              <1> ;Bytes 24 to 25 (2 bytes): The File Date.
+  1425                              <1> 
+  1426                              <1> ;Bytes 26 to 29 (4 bytes): The File Size. (The lower 16-bits are at Byte 26, the upper 16-bits are at Byte 28).
+  1427                              <1> 
+  1428                              <1> ;Bytes 30 to 42 (13 bytes): The File Name as a null-terminated string.
   1429                              <1> 
-  1430                              <1> ;=================================================================================================================
-  1431 00000E59 5C                  <1> left_path:      db '\'              ; Hardcoded root backslash
-  1432 00000E5A 00<rept>            <1>                times 64 db 0       ; 64 bytes of empty space for the rest of the path
-  1433                              <1> 
-  1434 00000E9A 5C                  <1> right_path:     db '\'              ; Hardcoded root backslash
-  1435 00000E9B 00<rept>            <1>                times 64 db 0       ; 64 bytes of empty space for the rest of the path
-  1436                              <1> 
+  1430                              <1> 
+  1431                              <1> ;=================================================================================================================
+  1432 00000E5B 5C                  <1> left_path:      db '\'              ; Hardcoded root backslash
+  1433 00000E5C 00<rept>            <1>                times 64 db 0       ; 64 bytes of empty space for the rest of the path
+  1434                              <1> 
+  1435 00000E9C 5C                  <1> right_path:     db '\'              ; Hardcoded root backslash
+  1436 00000E9D 00<rept>            <1>                times 64 db 0       ; 64 bytes of empty space for the rest of the path
   1437                              <1> 
-  1438                              <1> ;=================================================================================================================
-  1439                              <1> 
+  1438                              <1> 
+  1439                              <1> ;=================================================================================================================
   1440                              <1> 
-  1441                              <1> ;===============================================================================================================
-  1442                              <1> 
+  1441                              <1> 
+  1442                              <1> ;===============================================================================================================
   1443                              <1> 
-  1444 00000EDB 0000                <1> file_handle:    dw 0
-  1445 00000EDD 00<rept>            <1> file_buffer: times 2000 db 0
-  1446                              <1> 
+  1444                              <1> 
+  1445 00000EDD 0000                <1> file_handle:    dw 0
+  1446 00000EDF 00<rept>            <1> file_buffer: times 2000 db 0
   1447                              <1> 
-  1448                              <1> ;===============================================================================================================
+  1448                              <1> 
+  1449                              <1> ;===============================================================================================================
