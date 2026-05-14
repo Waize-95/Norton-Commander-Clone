@@ -28,6 +28,10 @@ print:  push bp
 print_loop:     mov al,[si]
                 cmp al,0
                 jz return_print
+                cmp al,0Dh
+                je carriage_return
+                cmp al,0Ah
+                je line_feed
                 mov [es:di],ax
                 inc si
                 add di,2
@@ -40,6 +44,29 @@ return_print:   pop es
                 pop ax
                 pop bp
                 ret 8
+
+carriage_return: inc si       ; we know the next character is LF so we just skip
+                 jmp print_loop
+
+line_feed:      push ax
+                push bx
+                
+                mov ax,di
+                shr ax,1
+                mov bx,80
+                div bl
+                xor ah,ah
+                add ax,1
+                mul bl
+
+                add ax,0
+                shl ax,1
+                mov di,ax
+                
+                pop bx
+                pop ax
+                inc si
+                jmp print_loop
 
 
 print_verticle: push bp

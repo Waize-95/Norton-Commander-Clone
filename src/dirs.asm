@@ -91,6 +91,7 @@ return_dirs:    pop di
 
 enter_directory:    push ax
                     push bx
+                    push cx
                     push dx
                     push si
                     xor ax,ax
@@ -111,7 +112,7 @@ enter_directory:    push ax
                     xor ax,ax
                     mov ax,[si+bx+13]
                     cmp al,10h
-                    jne return_enterdir
+                    jne near view_file   ; i would already have si and bx
 
                     mov dx,si
                     add dx,bx
@@ -127,13 +128,19 @@ enter_directory:    push ax
                     call load_directories
                     jmp refresh_screens
 
-dir_error:  jmp main_loop
+dir_error:          pop si
+                    pop dx
+                    pop cx
+                    pop bx
+                    pop ax
+                    jmp main_loop
 
 second_pane_dir:    mov si,right_file_list
                     jmp @here_second_pane_dir
 
 return_enterdir:    pop si
                     pop dx
+                    pop cx
                     pop bx
                     pop ax
                     call load_directories

@@ -114,7 +114,7 @@ move_down:      call main_unhighlight
                 inc al
                 mov [current_row],AL
                 jmp main_highlight
-
+                
 last_row:       mov al,2 ; first accessible row
                 mov [current_row],al
                 jmp main_highlight
@@ -173,4 +173,5 @@ exit:
 %include "help_ui.asm"
 %include "logic.asm"
 %include "extract.asm"
+%include "view_ui.asm"
 %include "data.asm"
