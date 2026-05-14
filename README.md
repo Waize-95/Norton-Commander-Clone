@@ -134,5 +134,6 @@ The file size issue has been resolved too, if the file size was very large say 8
 
 
 ##### Implemented the File reading feature with navigation
+![alt text](media/image-8.png)
 I have successfully implemented the file reading feature complete with navigating to the next page instead of just showing the first 25 lines, now i think the file manager is comeplete with just minor tweaks remaning before i can present it
 also i have yet to implement the file features
