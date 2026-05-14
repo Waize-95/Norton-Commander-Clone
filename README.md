@@ -131,3 +131,8 @@ The file size issue has been resolved too, if the file size was very large say 8
 #####  More ideas
 - Write the extensions of files infront of their filenames
 - Write the file sizes in KB or MB instead of just bytes
+
+
+##### Implemented the File reading feature with navigation
+I have successfully implemented the file reading feature complete with navigating to the next page instead of just showing the first 25 lines, now i think the file manager is comeplete with just minor tweaks remaning before i can present it
+also i have yet to implement the file features
